@@ -15,3 +15,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.pagination .page-number {
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  cursor: pointer;
+ }
+ 
+ .pagination .page-number.active {
+  background-color: #007BFF;
+  color: white;
+ }
+ 
+ .pagination .page-number.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+ }
+ 
+ .pagination .previous, .pagination .next {
+  font-weight: bold;
+ }
