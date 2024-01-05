@@ -23,7 +23,9 @@ export default function ProductCategoryDetail() {
           </div>
         </div>
         <div>
-          <button className="bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white">Save</button>
+          <button className="bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white">
+            Edit
+          </button>
         </div>
       </div>
     </div>

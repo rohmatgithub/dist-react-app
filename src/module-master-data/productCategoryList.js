@@ -3,8 +3,11 @@ import { uriMaster } from "../constanta/constanta";
 import { ApiGet } from "../util/api";
 import { useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router";
+import Pagination from "../components/pagination";
 
 export default function ProductCategory() {
+  const navigate = useNavigate();
   const [data, setData] = useState([{}]);
   const auth = useSelector((state) => state.auth);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,6 +39,10 @@ export default function ProductCategory() {
   const handlePageClick = (event) => {
     console.log(`User requested page number ${event.selected}`);
     // setCurrentPage(event);
+  };
+  const buttonAdd = (event) => {
+    event.preventDefault();
+    navigate("/masterdata/productcategory/add");
   };
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
@@ -72,6 +79,13 @@ export default function ProductCategory() {
                 d="m1 1 4 4 4-4"
               />
             </svg>
+          </button>
+          <button
+            type="button"
+            onClick={buttonAdd}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 ml-5 focus:outline-none"
+          >
+            Add
           </button>
         </div>
         <label for="table-search" class="sr-only">
@@ -156,28 +170,7 @@ export default function ProductCategory() {
           </span>{" "}
           of <span class="font-semibold text-gray-900">{totalItems}</span>
         </span>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="Next"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          pageCount={pageCount}
-          previousLabel="Previous"
-          renderOnZeroPageCount={null}
-          containerClassName={
-            "inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 bg-white rounded-s-lg rounded-e-lg"
-          }
-          activeLinkClassName={"bg-red-500 z-10 text-white"}
-          pageLinkClassName={
-            "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700s"
-          }
-          previousLinkClassName={
-            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-          }
-          nextLinkClassName={
-            "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-          }
-        />
+        <Pagination onPageChange={handlePageClick} pageCount={pageCount} />
       </nav>
     </div>
   );

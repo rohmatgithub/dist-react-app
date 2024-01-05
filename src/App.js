@@ -4,9 +4,10 @@ import Dashboard from "./dashboard";
 import ProductCategory from "./module-master-data/productCategoryList";
 import Sidebar from "./sidebar";
 import { useEffect, useState } from "react";
-import ProductCategoryDetail from "./module-master-data/productCategoryDetail";
+import ProductCategoryDetail from "./module-master-data/productCategoryAdd";
 import { useSelector } from "react-redux";
 import ProductGroupList from "./module-master-data/productGroupList";
+import ProductCategoryAdd from "./module-master-data/productCategoryAdd";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
   /* Check if the user is authenticated  false*/
@@ -69,6 +70,10 @@ const App = () => {
                 <Route
                   path="/masterdata/productcategory/detail"
                   element={<ProductCategoryDetail />}
+                />
+                <Route
+                  path="/masterdata/productcategory/add"
+                  element={<ProductCategoryAdd />}
                 />
                 <Route
                   path="/masterdata/productgroup"
