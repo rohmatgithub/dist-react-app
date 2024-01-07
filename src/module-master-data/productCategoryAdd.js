@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { styleInput, styleLable, uriMaster } from "../constanta/constanta";
-import { ApiPost } from "../util/api";
+import { useApiPost } from "../components/api";
 import { useState } from "react";
 
 export default function ProductCategoryAdd() {
@@ -19,12 +19,12 @@ export default function ProductCategoryAdd() {
     });
   };
   const buttonSave = async () => {
-    const response = await ApiPost(
-      `${uriMaster}/productcategory`,
-      reqBody,
-      auth.token
-    );
-    console.log("response -> ", response);
+    // const response = useApiPost(
+    //   `${uriMaster}/productcategory`,
+    //   reqBody,
+    //   auth.token
+    // );
+    // console.log("response -> ", response);
     // setData(response.payload.data);
   };
   return (

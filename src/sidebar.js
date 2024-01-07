@@ -170,6 +170,42 @@ export default function Sidebar() {
               </div>
               <span className="transform rotate-90">&#x276F;</span>
             </div>
+            {active === "admin" && (
+              <ul className="pl-4">
+                <li>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/admin/companyprofile"
+                  >
+                    Company Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/admin/company"
+                  >
+                    Company
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/admin/companydivision"
+                  >
+                    Company Division
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/admin/companybranch"
+                  >
+                    Company Branch
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </div>

@@ -8,6 +8,9 @@ import ProductCategoryDetail from "./module-master-data/productCategoryAdd";
 import { useSelector } from "react-redux";
 import ProductGroupList from "./module-master-data/productGroupList";
 import ProductCategoryAdd from "./module-master-data/productCategoryAdd";
+import CompanyProfileList from "./modul-admin/companyProfileList";
+import CompanyProfileAdd from "./modul-admin/companyProfileAdd";
+import CompanyProfileDetail from "./modul-admin/companyProfileDetail";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
   /* Check if the user is authenticated  false*/
@@ -79,6 +82,22 @@ const App = () => {
                   path="/masterdata/productgroup"
                   element={<ProductGroupList />}
                 />
+                <Route
+                  path="/admin/companyprofile"
+                  element={<CompanyProfileList />}
+                />
+                <Route
+                  path="/admin/companyprofile/add"
+                  element={<CompanyProfileAdd />}
+                />
+                <Route
+                  path="/admin/companyprofile/detail/:id"
+                  element={<CompanyProfileDetail />}
+                />
+                {/* <Route
+                  path="/admin/companyprofile/edit"
+                  element={<CompanyProfileAdd />}
+                /> */}
               </Routes>
             </div>
           </div>

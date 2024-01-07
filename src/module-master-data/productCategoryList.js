@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { uriMaster } from "../constanta/constanta";
-import { ApiGet } from "../util/api";
+import { ApiGet } from "../components/api";
 import { useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router";
@@ -29,15 +29,18 @@ export default function ProductCategory() {
       auth.token
     );
     console.log("response -> ", response.payload.data);
-    setTotalItems(response.payload.data);
+    // setTotalItems(response.payload.data);
   };
   useEffect(() => {
+    setTotalItems(1000);
     fetchListData();
     fetchCountData();
+    console.log(totalItems.toString());
   }, []);
 
   const handlePageClick = (event) => {
     console.log(`User requested page number ${event.selected}`);
+    setCurrentPage(event.selected + 1);
     // setCurrentPage(event);
   };
   const buttonAdd = (event) => {
@@ -159,19 +162,14 @@ export default function ProductCategory() {
           })}
         </tbody>
       </table>
-      <nav
-        class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-        aria-label="Table navigation"
-      >
-        <span class="text-sm font-normal text-gray-500 ml-4 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-          Showing{" "}
-          <span class="font-semibold text-gray-900">
-            {(currentPage - 1) * itemsPerPage + 1}-{currentPage * itemsPerPage}
-          </span>{" "}
-          of <span class="font-semibold text-gray-900">{totalItems}</span>
-        </span>
-        <Pagination onPageChange={handlePageClick} pageCount={pageCount} />
-      </nav>
+      <Pagination
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+        totalItems={totalItems}
+      />
     </div>
   );
 }

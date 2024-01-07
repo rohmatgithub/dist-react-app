@@ -3,27 +3,40 @@ import ReactPaginate from "react-paginate";
 
 export default function Pagination(props) {
   return (
-    <ReactPaginate
-      breakLabel="..."
-      nextLabel="Next"
-      onPageChange={props.onPageChange}
-      pageRangeDisplayed={3}
-      pageCount={props.pageCount}
-      previousLabel="Previous"
-      renderOnZeroPageCount={null}
-      containerClassName={
-        "inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 bg-white rounded-s-lg rounded-e-lg"
-      }
-      activeLinkClassName={"bg-red-500 z-10 text-white"}
-      pageLinkClassName={
-        "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700s"
-      }
-      previousLinkClassName={
-        "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-      }
-      nextLinkClassName={
-        "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-      }
-    />
+    <nav
+      class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
+      aria-label="Table navigation"
+    >
+      <span class="text-sm font-normal text-gray-500 ml-4 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+        Showing{" "}
+        <span class="font-semibold text-gray-900">
+          {(props.currentPage - 1) * props.itemsPerPage + 1}-
+          {props.currentPage * props.itemsPerPage}
+        </span>{" "}
+        of <span class="font-semibold text-gray-900">{props.totalItems}</span>
+      </span>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="Next"
+        onPageChange={props.onPageChange}
+        pageRangeDisplayed={3}
+        pageCount={props.pageCount}
+        previousLabel="Previous"
+        renderOnZeroPageCount={null}
+        containerClassName={
+          "inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 bg-white rounded-s-lg rounded-e-lg"
+        }
+        activeLinkClassName={"bg-red-500 z-10 text-white"}
+        pageLinkClassName={
+          "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700s"
+        }
+        previousLinkClassName={
+          "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+        }
+        nextLinkClassName={
+          "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+        }
+      />
+    </nav>
   );
 }

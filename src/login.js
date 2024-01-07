@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uriAuth } from "./constanta/constanta";
 import { useDispatch } from "react-redux";
-import { ApiPost } from "./util/api";
+import { ApiPost } from "./components/api";
 
 const Login = () => {
   const dispatch = useDispatch();
