@@ -9,7 +9,7 @@ import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { formatDatetime } from "../util/date";
 
-export default function CompanyProfileList() {
+export default function CompanyDivisionList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState([{}]);
@@ -21,7 +21,7 @@ export default function CompanyProfileList() {
 
   const fetchListData = async () => {
     const response = await ApiGet(
-      `${uriMaster}/companyprofile?page=${currentPage}&order_by=name ASC`,
+      `${uriMaster}/companydivision?page=${currentPage}&order_by=updated_at DESC`,
       auth.token
     );
     if (response.statusCode === 401) {
@@ -35,7 +35,7 @@ export default function CompanyProfileList() {
   };
   const fetchCountData = async () => {
     const response = await ApiGet(
-      uriMaster + "/companyprofile/initiate",
+      uriMaster + "/companydivision/initiate",
       auth.token
     );
     setTotalItems(response.payload.data);
@@ -55,7 +55,7 @@ export default function CompanyProfileList() {
   };
   const buttonAdd = (event) => {
     event.preventDefault();
-    navigate("/admin/companyprofile/add");
+    navigate("/admin/companydivision/add");
   };
 
   return (
@@ -63,41 +63,9 @@ export default function CompanyProfileList() {
       <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
         <div>
           <button
-            id="dropdownRadioButton"
-            data-dropdown-toggle="dropdownRadio"
-            class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5"
-            type="button"
-          >
-            <svg
-              class="w-3 h-3 text-gray-500 me-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-            </svg>
-            Last 30 days
-            <svg
-              class="w-2.5 h-2.5 ms-2.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-          <button
             type="button"
             onClick={buttonAdd}
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 ml-5 focus:outline-none"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none"
           >
             Add
           </button>
@@ -133,16 +101,10 @@ export default function CompanyProfileList() {
         <thead class="text-xs text-gray-100 uppercase bg-gray-600">
           <tr>
             <th scope="col" class="px-6 py-3">
-              ID
-            </th>
-            <th scope="col" class="px-6 py-3">
-              NPWP
+              Code
             </th>
             <th scope="col" class="px-6 py-3">
               Name
-            </th>
-            <th scope="col" class="px-6 py-3">
-              Address
             </th>
             <th scope="col" class="px-6 py-3">
               Created Date
@@ -160,12 +122,8 @@ export default function CompanyProfileList() {
             data.map((d, i) => {
               return (
                 <tr class="bg-white border-b hover:bg-gray-50">
-                  <td class="px-6 py-4 font-medium text-black">{d.id}</td>
-                  <td class="px-6 py-4 font-medium text-black">{d.npwp}</td>
+                  <td class="px-6 py-4 font-medium text-black">{d.code}</td>
                   <td class="px-6 py-4 font-medium text-black">{d.name}</td>
-                  <td class="px-6 py-4 font-medium text-black">
-                    {d.address_1}
-                  </td>
                   <td class="px-6 py-4 font-medium text-black">
                     {formatDatetime(d.created_at)}
                   </td>
@@ -174,13 +132,13 @@ export default function CompanyProfileList() {
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
                     <Link
-                      to={`/admin/companyprofile/edit/${d.id}`}
+                      to={`/admin/companyDivision/edit/${d.id}`}
                       class="font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEdit} />
                     </Link>
                     <Link
-                      to={`/admin/companyprofile/detail/${d.id}`}
+                      to={`/admin/companyDivision/detail/${d.id}`}
                       class="ml-4 font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEye} />

@@ -33,6 +33,20 @@ export const ApiPost = async (url, body, authToken) => {
   }
 };
 
+export const ApiPut = async (url, body, authToken) => {
+  try {
+    const resp = await axios.put(url, body, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken,
+      },
+    });
+    return setResponseSuccess(resp);
+  } catch (error) {
+    return setResponseError(error);
+  }
+};
+
 export const ApiGet = async (url, authToken) => {
   try {
     const resp = await axios.get(url, {

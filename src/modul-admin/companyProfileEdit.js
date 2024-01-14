@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { styleInput, styleLable, uriMaster } from "../constanta/constanta";
-import { ApiGet, ApiPost } from "../components/api";
+import { ApiGet, ApiPut } from "../components/api";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { notifyError, notifySuccess } from "../components/alert";
 
-export default function CompanyProfileAdd() {
+export default function CompanyProfileEdit() {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
@@ -16,6 +17,7 @@ export default function CompanyProfileAdd() {
     value: 0,
   };
 
+  const [updatedAt, setUpdatedAt] = useState("");
   const [npwp, setNpwp] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -30,8 +32,51 @@ export default function CompanyProfileAdd() {
   const [subDistrictValue, setSubDistrictValue] = useState(valueOptions);
   const [urbanVillageValue, setUrbanVillageValue] = useState(valueOptions);
 
-  useEffect(() => {
+  const fetchPrepareData = async () => {
+    const response = await ApiGet(
+      `${uriMaster}/companyprofile/${id}`,
+      auth.token
+    );
+
+    const content = response?.payload?.data;
+    setNpwp(content.npwp);
+    setName(content.name);
+    setAddress(content.address_1);
+    setUpdatedAt(content.updated_at);
+    setCountryValue({
+      label: content.country.name,
+      value: content.country.id,
+    });
+
+    setProvinceValue({
+      label: content.province.name,
+      value: content.province.id,
+    });
+
+    setDistrictValue({
+      label: content.district.name,
+      value: content.district.id,
+    });
+
+    setSubDistrictValue({
+      label: content.sub_district.name,
+      value: content.sub_district.id,
+    });
+
+    setUrbanVillageValue({
+      label: content.urban_village.name,
+      value: content.urban_village.id,
+    });
+
     fetchCountry();
+    fetchProvince(content.country.id);
+    fetchDistrict(content.province.id);
+    fetchSubDistrict(content.district.id);
+    fetchUrbanVillage(content.sub_district.id);
+  };
+
+  useEffect(() => {
+    fetchPrepareData();
   }, []);
 
   const onChangeCountry = (e) => {
@@ -167,6 +212,7 @@ export default function CompanyProfileAdd() {
   };
   const buttonSave = async () => {
     let reqBody = {
+      id: parseInt(id, 10),
       name: name,
       npwp: npwp,
       address_1: address,
@@ -175,13 +221,15 @@ export default function CompanyProfileAdd() {
       district_id: districtValue.value,
       sub_district_id: subDistrictValue.value,
       urban_village_id: urbanVillageValue.value,
+      updated_at: updatedAt,
     };
-    const response = await ApiPost(
+
+    console.log("updated_at: ", updatedAt);
+    const response = await ApiPut(
       `${uriMaster}/companyprofile`,
       reqBody,
       auth.token
     );
-    console.log("response -> ", response);
 
     if (response.payload.status.detail !== null) {
       const myObject = response.payload.status.detail;
@@ -200,6 +248,7 @@ export default function CompanyProfileAdd() {
         }
       });
     }
+
     if (response.status === 400) {
       notifyError(response.payload.status.message);
       return;
@@ -211,12 +260,17 @@ export default function CompanyProfileAdd() {
     }
     // setData(response.payload.data);
   };
-  const buttonCancel = async () => {
+  const buttonCancel = async (e) => {
+    e.preventDefault();
     navigate("/admin/companyprofile");
   };
 
   return (
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
+      {/* <div className="text-black text-4xl leading-6 mr-4 mb-10 max-md:max-w-full max-md:mr-2.5">
+        Company Profile
+      </div> */}
+
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
           <div>
@@ -227,7 +281,6 @@ export default function CompanyProfileAdd() {
               type="text"
               name="npwp"
               id="npwp"
-              s
               className={styleInput}
               value={npwp}
               onChange={handleChange}
@@ -246,6 +299,7 @@ export default function CompanyProfileAdd() {
               name="name"
               id="name"
               className={styleInput}
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <div
@@ -263,6 +317,7 @@ export default function CompanyProfileAdd() {
               options={countryOptions}
               onChange={onChangeCountry}
               value={countryValue}
+              defaultValue={countryValue}
             />
             <div
               id="country_id_msg"
@@ -278,6 +333,10 @@ export default function CompanyProfileAdd() {
               options={provinceOptions}
               onChange={onChangeProvince}
               value={provinceValue}
+              defaultValue={provinceOptions.find(
+                (option) => option.value === provinceValue
+              )}
+              //   defaultValue={provinceValue}
             />
             <div
               id="province_id_msg"
@@ -293,6 +352,7 @@ export default function CompanyProfileAdd() {
               options={districtOptions}
               onChange={onChangeDistrict}
               value={districtValue}
+              defaultValue={districtValue}
             />
             <div
               id="district_id_msg"
@@ -308,6 +368,7 @@ export default function CompanyProfileAdd() {
               options={subDistrictOptions}
               onChange={onChangeSubDistrict}
               value={subDistrictValue}
+              defaultValue={subDistrictValue}
             />
             <div
               id="sub_district_id_msg"
@@ -323,6 +384,7 @@ export default function CompanyProfileAdd() {
               options={urbanVillageOptions}
               onChange={setUrbanVillageValue}
               value={urbanVillageValue}
+              defaultValue={urbanVillageValue}
             />
             <div
               id="urban_village_id_msg"
@@ -338,6 +400,7 @@ export default function CompanyProfileAdd() {
               name="address"
               id="address_1"
               className={styleInput}
+              value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
             <div

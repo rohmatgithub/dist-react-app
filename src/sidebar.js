@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Link, useNavigate } from "react-router-dom";
-export default function Sidebar() {
+export default function Sidebar(props) {
   const dispatch = useDispatch();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
@@ -21,6 +21,10 @@ export default function Sidebar() {
     navigate("/");
     // window.location.reload();
   };
+
+  const onClickMenu = (titleMenu) => {
+    props.setTitleMenu(titleMenu);
+  };
   return (
     <div className="bg-white w-64 h-screen flex flex-col justify-between">
       <div className="flex flex-col">
@@ -28,7 +32,7 @@ export default function Sidebar() {
           <button className="text-blue-600 font-bold text-lg">My App</button>
         </div>
         <ul>
-          <li>
+          <li onClick={() => onClickMenu("Dashboard")}>
             <div className="cursor-pointer flex items-stretch gap-4 pl-5 mt-20 self-start max-md:ml-2.5 max-md:mt-10 border-l-4 border-blue-500">
               <img
                 loading="lazy"
@@ -60,7 +64,7 @@ export default function Sidebar() {
             </div>
             {active === "masterData" && (
               <ul className="pl-4">
-                <li>
+                <li onClick={() => onClickMenu("Product Category")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/masterdata/productcategory"
@@ -68,7 +72,7 @@ export default function Sidebar() {
                     Product Category
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Product Group")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/masterdata/productgroup"
@@ -76,7 +80,7 @@ export default function Sidebar() {
                     Product Group
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Product")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/masterdata/product"
@@ -84,7 +88,7 @@ export default function Sidebar() {
                     Product
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Customer")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/masterdata/customer"
@@ -92,7 +96,7 @@ export default function Sidebar() {
                     Customer
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Salesman")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/masterdata/salesman"
@@ -172,7 +176,7 @@ export default function Sidebar() {
             </div>
             {active === "admin" && (
               <ul className="pl-4">
-                <li>
+                <li onClick={() => onClickMenu("Company Profile")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/admin/companyprofile"
@@ -180,7 +184,7 @@ export default function Sidebar() {
                     Company Profile
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Company")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/admin/company"
@@ -188,7 +192,7 @@ export default function Sidebar() {
                     Company
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Company Division")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/admin/companydivision"
@@ -196,7 +200,7 @@ export default function Sidebar() {
                     Company Division
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => onClickMenu("Company Branch")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/admin/companybranch"

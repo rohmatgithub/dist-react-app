@@ -8,8 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { formatDatetime } from "../util/date";
+import { AlertCustomStyles, notifyError } from "../components/alert";
 
-export default function CompanyProfileList() {
+export default function CompanyBranchList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState([{}]);
@@ -21,10 +22,10 @@ export default function CompanyProfileList() {
 
   const fetchListData = async () => {
     const response = await ApiGet(
-      `${uriMaster}/companyprofile?page=${currentPage}&order_by=name ASC`,
+      `${uriMaster}/companybranch?page=${currentPage}&order_by=updated_at DESC`,
       auth.token
     );
-    if (response.statusCode === 401) {
+    if (response.status === 401) {
       dispatch({
         type: "LOGOUT",
       });
@@ -35,7 +36,7 @@ export default function CompanyProfileList() {
   };
   const fetchCountData = async () => {
     const response = await ApiGet(
-      uriMaster + "/companyprofile/initiate",
+      uriMaster + "/companybranch/initiate",
       auth.token
     );
     setTotalItems(response.payload.data);
@@ -55,14 +56,14 @@ export default function CompanyProfileList() {
   };
   const buttonAdd = (event) => {
     event.preventDefault();
-    navigate("/admin/companyprofile/add");
+    navigate("/admin/companybranch/add");
   };
 
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
       <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
         <div>
-          <button
+          {/* <button
             id="dropdownRadioButton"
             data-dropdown-toggle="dropdownRadio"
             class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5"
@@ -93,7 +94,7 @@ export default function CompanyProfileList() {
                 d="m1 1 4 4 4-4"
               />
             </svg>
-          </button>
+          </button> */}
           <button
             type="button"
             onClick={buttonAdd}
@@ -133,10 +134,7 @@ export default function CompanyProfileList() {
         <thead class="text-xs text-gray-100 uppercase bg-gray-600">
           <tr>
             <th scope="col" class="px-6 py-3">
-              ID
-            </th>
-            <th scope="col" class="px-6 py-3">
-              NPWP
+              Code
             </th>
             <th scope="col" class="px-6 py-3">
               Name
@@ -160,8 +158,7 @@ export default function CompanyProfileList() {
             data.map((d, i) => {
               return (
                 <tr class="bg-white border-b hover:bg-gray-50">
-                  <td class="px-6 py-4 font-medium text-black">{d.id}</td>
-                  <td class="px-6 py-4 font-medium text-black">{d.npwp}</td>
+                  <td class="px-6 py-4 font-medium text-black">{d.code}</td>
                   <td class="px-6 py-4 font-medium text-black">{d.name}</td>
                   <td class="px-6 py-4 font-medium text-black">
                     {d.address_1}
@@ -174,13 +171,13 @@ export default function CompanyProfileList() {
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
                     <Link
-                      to={`/admin/companyprofile/edit/${d.id}`}
+                      to={`/admin/companybranch/edit/${d.id}`}
                       class="font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEdit} />
                     </Link>
                     <Link
-                      to={`/admin/companyprofile/detail/${d.id}`}
+                      to={`/admin/companybranch/detail/${d.id}`}
                       class="ml-4 font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEye} />
