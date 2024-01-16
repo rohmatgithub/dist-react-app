@@ -4,7 +4,7 @@ import Dashboard from "./dashboard";
 import ProductCategory from "./module-master-data/productCategoryList";
 import Sidebar from "./sidebar";
 import { useEffect, useState } from "react";
-import ProductCategoryDetail from "./module-master-data/productCategoryAdd";
+import ProductCategoryDetail from "./module-master-data/productCategoryDetail";
 import { useSelector } from "react-redux";
 import ProductGroupList from "./module-master-data/productGroupList";
 import ProductCategoryAdd from "./module-master-data/productCategoryAdd";
@@ -26,8 +26,18 @@ import CompanyDivisionEdit from "./modul-admin/companyDivisionEdit";
 import CompanyDivisionDetail from "./modul-admin/companyDivisionDetail";
 import AlertError from "./components/alert";
 import { ToastContainer } from "react-toastify";
+import UserAdd from "./modul-admin/userAdd";
+import UserList from "./modul-admin/userList";
+import UserDetail from "./modul-admin/userDetail";
+import UserEdit from "./modul-admin/userEdit";
+import SelectBranch from "./selectBranch";
+import ProductCategoryEdit from "./module-master-data/productCategoryEdit";
+import ProductGroupAdd from "./module-master-data/productGroupAdd";
+import ProductGroupDetail from "./module-master-data/productGroupDetail";
+import ProductGroupEdit from "./module-master-data/productGroupEdit";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
+  const [isSelected, setIsSelected] = useState("");
   const [titleMenu, setTitleMenu] = useState("");
   /* Check if the user is authenticated  false*/
   const inlineStyles = {
@@ -48,18 +58,22 @@ const App = () => {
     },
   };
 
-  const testClicks = (value) => {
-    console.log("Menu: " + value);
-  };
   const auth = useSelector((state) => state.auth);
   useEffect(() => {
     setisAuthenticated(auth.isLogin);
+    setIsSelected(auth.isSelected);
   }, []);
 
   useEffect(() => {
     setisAuthenticated(auth.isLogin);
-  }, [auth]);
+  }, [auth.isLogin]);
 
+  useEffect(() => {
+    setIsSelected(auth.isSelected);
+  }, [auth.isSelected]);
+
+  console.log("isSelected : ", isSelected);
+  console.log("isAuthenticated : ", isAuthenticated);
   return (
     <div className="bg-stone-50 max-md:pr-5">
       <Router>
@@ -67,7 +81,28 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Login />} />
           </Routes>
+        ) : isSelected === undefined || !isSelected ? (
+          <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+            <div
+              style={inlineStyles.container}
+              className="flex flex-col items-stretch w-[100%] h-full max-md:w-full max-md:ml-0"
+            >
+              <div
+                id="header"
+                className="justify-between flex gap-5 pt-1.5 items-start max-md:max-w-full max-md:flex-wrap"
+              >
+                <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
+                  {titleMenu}
+                </div>
+                <div>foto profile</div>
+              </div>
+              <Routes>
+                <Route path="/selected/branch" element={<SelectBranch />} />
+              </Routes>
+            </div>
+          </div>
         ) : (
+          // Other code here
           <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
             <Sidebar setTitleMenu={setTitleMenu} />
             <div
@@ -85,22 +120,6 @@ const App = () => {
               </div>
               <Routes>
                 <Route path="/home" element={<Dashboard />} />
-                <Route
-                  path="/masterdata/productcategory"
-                  element={<ProductCategory />}
-                />
-                <Route
-                  path="/masterdata/productcategory/detail"
-                  element={<ProductCategoryDetail />}
-                />
-                <Route
-                  path="/masterdata/productcategory/add"
-                  element={<ProductCategoryAdd />}
-                />
-                <Route
-                  path="/masterdata/productgroup"
-                  element={<ProductGroupList />}
-                />
                 <Route
                   path="/admin/companyprofile"
                   element={<CompanyProfileList />}
@@ -159,9 +178,44 @@ const App = () => {
                   path="/admin/companydivision/detail/:id"
                   element={<CompanyDivisionDetail />}
                 />
+                <Route path="/admin/user" element={<UserList />} />
+                <Route path="/admin/user/add" element={<UserAdd />} />
+                <Route path="/admin/user/detail/:id" element={<UserDetail />} />
+                <Route path="/admin/user/edit/:id" element={<UserEdit />} />
+                <Route
+                  path="/masterdata/productcategory"
+                  element={<ProductCategory />}
+                />
+                <Route
+                  path="/masterdata/productcategory/detail/:id"
+                  element={<ProductCategoryDetail />}
+                />
+                <Route
+                  path="/masterdata/productcategory/add"
+                  element={<ProductCategoryAdd />}
+                />
+                <Route
+                  path="/masterdata/productcategory/edit/:id"
+                  element={<ProductCategoryEdit />}
+                />
+                <Route
+                  path="/masterdata/productgroup"
+                  element={<ProductGroupList />}
+                />
+                <Route
+                  path="/masterdata/productgroup/add"
+                  element={<ProductGroupAdd />}
+                />
+                <Route
+                  path="/masterdata/productgroup/detail/:id"
+                  element={<ProductGroupDetail />}
+                />
+                <Route
+                  path="/masterdata/productgroup/edit/:id"
+                  element={<ProductGroupEdit />}
+                />
               </Routes>
             </div>
-            {/* <AlertError /> */}
           </div>
         )}
       </Router>

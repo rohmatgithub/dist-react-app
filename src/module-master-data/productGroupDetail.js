@@ -1,11 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { styleInput, styleLable, uriMaster } from "../constanta/constanta";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { ApiGet } from "../components/api";
+import { styleInput, styleLable, uriMaster } from "../constanta/constanta";
 import { formatDatetime } from "../util/date";
 
-export default function ProductCategoryDetail() {
+export default function ProductGroupDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -14,10 +14,9 @@ export default function ProductCategoryDetail() {
   useEffect(() => {
     const fetchDetails = async () => {
       const response = await ApiGet(
-        `${uriMaster}/productcategory/${id}`,
+        `${uriMaster}/productgroup/${id}`,
         auth.token
       );
-      console.log(response);
       setData(response.payload.data);
     };
 
@@ -26,18 +25,14 @@ export default function ProductCategoryDetail() {
 
   const buttonEdit = (e) => {
     e.preventDefault();
-    navigate("/masterdata/productcategory/edit/" + id);
+    navigate("/masterdata/productgroup/edit/" + id);
   };
   const buttonCancel = (e) => {
     e.preventDefault();
-    navigate("/masterdata/productcategory");
+    navigate("/masterdata/productgroup");
   };
   return (
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
-      <div className="text-black text-4xl leading-6 mr-4 mb-10 max-md:max-w-full max-md:mr-2.5">
-        Components
-      </div>
-
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
           <div>
@@ -45,7 +40,15 @@ export default function ProductCategoryDetail() {
               Division
             </label>
             <div className={styleInput}>
-              {data.division_code + " - " + data.division_name}
+              {data?.division?.code + " - " + data?.division?.name}
+            </div>
+          </div>
+          <div>
+            <label htmlFor="parent" className={styleLable}>
+              Parent
+            </label>
+            <div className={styleInput}>
+              {data?.parent?.code + " - " + data?.parent?.name}
             </div>
           </div>
           <div>
@@ -60,18 +63,24 @@ export default function ProductCategoryDetail() {
             </label>
             <div className={styleInput}>{data.name}</div>
           </div>
-        </div>
-        <div>
-          <label htmlFor="created_at" className={styleLable}>
-            Created Date
-          </label>
-          <div className={styleInput}>{formatDatetime(data.created_at)}</div>
-        </div>
-        <div>
-          <label htmlFor="updated_at" className={styleLable}>
-            Updated Date
-          </label>
-          <div className={styleInput}>{formatDatetime(data.updated_at)}</div>
+          <div>
+            <label htmlFor="level" className={styleLable}>
+              Level
+            </label>
+            <div className={styleInput}>{data.level}</div>
+          </div>
+          <div>
+            <label htmlFor="created_at" className={styleLable}>
+              Branch Created Date
+            </label>
+            <div className={styleInput}>{formatDatetime(data.created_at)}</div>
+          </div>
+          <div>
+            <label htmlFor="updated_at" className={styleLable}>
+              Branch Updated Date
+            </label>
+            <div className={styleInput}>{formatDatetime(data.updated_at)}</div>
+          </div>
         </div>
         <div className="flex mt-5">
           <div>

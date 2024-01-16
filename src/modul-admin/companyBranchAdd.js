@@ -133,7 +133,6 @@ export default function CompanyBranchAdd() {
               type="text"
               name="code"
               id="code"
-              s
               className={styleInput}
               value={code}
               onChange={(e) => handleCode(e, setCode)}

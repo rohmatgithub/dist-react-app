@@ -1,88 +1,70 @@
-import React, { useState } from "react";
-import ReactPaginate from "react-paginate";
+import React, { useEffect, useState } from "react";
+import { uriMaster } from "../constanta/constanta";
+import { ApiGet } from "../components/api";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import Pagination from "../components/pagination";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { formatDatetime } from "../util/date";
 
 export default function ProductGroupList() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const totalItems = 1000;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [data, setData] = useState([{}]);
+  const auth = useSelector((state) => state.auth);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+  const fetchListData = async () => {
+    const response = await ApiGet(
+      `${uriMaster}/productgroup?page=${currentPage}&order_by=updated_at DESC`,
+      auth.token
+    );
+    if (response.statusCode === 401) {
+      dispatch({
+        type: "LOGOUT",
+      });
+      navigate("/");
+      return;
+    }
+    setData(response.payload.data);
+  };
+  const fetchCountData = async () => {
+    const response = await ApiGet(
+      uriMaster + "/productgroup/count",
+      auth.token
+    );
+    setTotalItems(response.payload.data);
+  };
+  useEffect(() => {
+    fetchListData();
+    fetchCountData();
+  }, []);
+
   const handlePageClick = (event) => {
-    console.log(`User requested page number ${event.selected}`);
+    setCurrentPage(event.selected + 1);
     // setCurrentPage(event);
   };
+  const buttonAdd = (event) => {
+    event.preventDefault();
+    navigate("/masterdata/productgroup/add");
+  };
+
   return (
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
       <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
         <div>
           <button
-            id="dropdownRadioButton"
-            data-dropdown-toggle="dropdownRadio"
-            class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5"
             type="button"
+            onClick={buttonAdd}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none"
           >
-            <svg
-              class="w-3 h-3 text-gray-500 me-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-            </svg>
-            Last 30 days
-            <svg
-              class="w-2.5 h-2.5 ms-2.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
+            Add
           </button>
-          <div
-            id="dropdownRadio"
-            class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
-            data-popper-reference-hidden=""
-            data-popper-escaped=""
-            data-popper-placement="top"
-            // style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);"
-            style={{
-              position: "absolute",
-              inset: "auto auto 0px 0px",
-              margin: "0px",
-              transform: "translate3d(522.5px, 3847.5px, 0px)",
-            }}
-          >
-            <ul
-              class="p-3 space-y-1 text-sm text-gray-700"
-              aria-labelledby="dropdownRadioButton"
-            >
-              <li>
-                <div class="flex items-center p-2 rounded hover:bg-gray-100">
-                  <input
-                    id="filter-radio-example-1"
-                    type="radio"
-                    value=""
-                    name="filter-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-gray-600"
-                  />
-                  <label
-                    for="filter-radio-example-1"
-                    class="w-full ms-2 text-sm font-medium text-gray-900 rounded"
-                  >
-                    Last day
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </div>
         </div>
         <label for="table-search" class="sr-only">
           Search
@@ -115,16 +97,19 @@ export default function ProductGroupList() {
         <thead class="text-xs text-gray-100 uppercase bg-gray-600">
           <tr>
             <th scope="col" class="px-6 py-3">
-              Product name
+              Division
             </th>
             <th scope="col" class="px-6 py-3">
-              Color
+              Code
             </th>
             <th scope="col" class="px-6 py-3">
-              Category
+              Name
             </th>
             <th scope="col" class="px-6 py-3">
-              Price
+              Created Date
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Updated Date
             </th>
             <th scope="col" class="px-6 py-3">
               Action
@@ -132,55 +117,55 @@ export default function ProductGroupList() {
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-white border-b hover:bg-gray-50">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-black whitespace-nowrap"
-            >
-              Apple MacBook Pro 17"
-            </th>
-            <td class="px-6 py-4 font-medium text-black">Silver</td>
-            <td class="px-6 py-4 font-medium text-black">Laptop</td>
-            <td class="px-6 py-4 font-medium text-black">$2999</td>
-            <td class="px-6 py-4 font-medium text-black">
-              <a href="#" class="font-medium text-blue-600 hover:underline">
-                Edit
-              </a>
-            </td>
-          </tr>
+          {data && data.length > 0 ? (
+            data.map((d, i) => {
+              return (
+                <tr class="bg-white border-b hover:bg-gray-50">
+                  <td class="px-6 py-4 font-medium text-black">
+                    {d?.division?.code + " - " + d?.division?.name}
+                  </td>
+                  <td class="px-6 py-4 font-medium text-black">{d.code}</td>
+                  <td class="px-6 py-4 font-medium text-black">{d.name}</td>
+                  <td class="px-6 py-4 font-medium text-black">
+                    {formatDatetime(d.created_at)}
+                  </td>
+                  <td class="px-6 py-4 font-medium text-black">
+                    {formatDatetime(d.updated_at)}
+                  </td>
+                  <td class="px-6 py-4 font-medium text-black">
+                    <Link
+                      to={`/masterdata/productgroup/edit/${d.id}`}
+                      class="font-medium text-blue-600 hover:underline"
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </Link>
+                    <Link
+                      to={`/masterdata/productgroup/detail/${d.id}`}
+                      class="ml-4 font-medium text-blue-600 hover:underline"
+                    >
+                      <FontAwesomeIcon icon={faEye} />
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan="7" className="">
+                No data available
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-      <nav
-        class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-        aria-label="Table navigation"
-      >
-        <span class="text-sm font-normal text-gray-500 ml-4 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-          Showing <span class="font-semibold text-gray-900">1-10</span> of{" "}
-          <span class="font-semibold text-gray-900">1000</span>
-        </span>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="Next"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          pageCount={pageCount}
-          previousLabel="Previous"
-          renderOnZeroPageCount={null}
-          containerClassName={
-            "inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 bg-white rounded-s-lg rounded-e-lg"
-          }
-          activeLinkClassName={"bg-red-500 z-10 text-white"}
-          pageLinkClassName={
-            "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700s"
-          }
-          previousLinkClassName={
-            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-          }
-          nextLinkClassName={
-            "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-          }
-        />
-      </nav>
+      <Pagination
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+        totalItems={totalItems}
+      />
     </div>
   );
 }

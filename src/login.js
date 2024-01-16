@@ -33,7 +33,7 @@ const Login = () => {
       authorization: resp.authToken,
     });
 
-    navigate("/home");
+    navigate("/selected/branch");
   };
 
   return (

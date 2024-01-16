@@ -7,14 +7,32 @@ import Select from "react-select";
 import { handleCode, handleName } from "../util/regex";
 import { notifyError, notifySuccess } from "../components/alert";
 
-export default function ProductCategoryAdd() {
+export default function ProductGroupAdd() {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
-  const [companyDivisinOptions, setCompanyDivisinOptions] = useState([{}]);
-  const [companyDivisinValue, setCompanyDivisinValue] = useState(null);
+  const [levelOptions, setLevelOptions] = useState([
+    {
+      value: 1,
+      label: "1",
+    },
+    {
+      value: 2,
+      label: "2",
+    },
+    {
+      value: 3,
+      label: "3",
+    },
+  ]);
+  const [level, setLevel] = useState(0);
+  const [companyDivisinoOptions, setCompanyDivisinoOptions] = useState([{}]);
+  const [companyDivisinoValue, setCompanyDivisinoValue] = useState(null);
+  const [parentOptions, setParentOptions] = useState([{}]);
+  const [parentValue, setParentValue] = useState(null);
+  const [isDisableLevel, setIsDisableLevel] = useState(true);
   useEffect(() => {
     fetchCompany();
   }, []);
@@ -31,16 +49,69 @@ export default function ProductCategoryAdd() {
       label: item.code + " - " + item.name,
       value: item.id,
     }));
-    return setCompanyDivisinOptions(data);
+    return setCompanyDivisinoOptions(data);
+  };
+
+  const fetchParent = async (level, divisionID) => {
+    if (
+      divisionID === undefined ||
+      divisionID === null ||
+      level === undefined ||
+      level < 1
+    ) {
+      return;
+    }
+    const response = await ApiGet(
+      uriMaster +
+        `/productgroup?page=1&limit=-99&order_by=name ASC&filter=level eq ${
+          level - 1
+        }, division_id eq ${divisionID}`,
+      auth.token
+    );
+    console.log("parent : ", response);
+    if (response.payload.data === null) {
+      setParentValue({
+        label: "",
+        value: 0,
+      });
+      return setParentOptions([
+        {
+          label: "",
+          value: 0,
+        },
+      ]);
+    }
+    const data = response.payload.data.map((item) => ({
+      label: item.code + " - " + item.name,
+      value: item.id,
+    }));
+    return setParentOptions(data);
+  };
+
+  const onChangeCompanyDivision = async (data) => {
+    setCompanyDivisinoValue(data);
+    await fetchParent(level, data.value);
+  };
+  const onChangeLevel = async (data) => {
+    setLevel(data.value);
+    if (data.value > 1) {
+      setIsDisableLevel(false);
+      await fetchParent(data.value, companyDivisinoValue.value);
+    } else {
+      setLevel(0);
+      setIsDisableLevel(true);
+    }
   };
   const buttonSave = async () => {
     let reqBody = {
-      division_id: companyDivisinValue.value,
+      division_id: companyDivisinoValue.value,
+      parent_id: parentValue === null ? 0 : parentValue.value,
+      level: level,
       code: code,
       name: name,
     };
     const response = await ApiPost(
-      `${uriMaster}/productcategory`,
+      `${uriMaster}/productgroup`,
       reqBody,
       auth.token
     );
@@ -68,12 +139,12 @@ export default function ProductCategoryAdd() {
 
     if (response.status === 200) {
       notifySuccess(response.payload.status.message);
-      navigate("/masterdata/productcategory");
+      navigate("/masterdata/productgroup");
     }
     // setData(response.payload.data);
   };
   const buttonCancel = async () => {
-    navigate("/masterdata/productcategory");
+    navigate("/masterdata/productgroup");
   };
 
   return (
@@ -86,8 +157,8 @@ export default function ProductCategoryAdd() {
             </label>
             <Select
               id="company_division_id"
-              options={companyDivisinOptions}
-              onChange={setCompanyDivisinValue}
+              options={companyDivisinoOptions}
+              onChange={onChangeCompanyDivision}
               // value={subDistrictValue}
             />
             <div
@@ -129,6 +200,48 @@ export default function ProductCategoryAdd() {
               className="text-xs text-rose-500 pointer-events-none opacity-0"
             ></div>
           </div>
+          <div>
+            <label htmlFor="name" className={styleLable}>
+              Level
+            </label>
+            <Select
+              id="level"
+              options={levelOptions}
+              onChange={onChangeLevel}
+              styles={{
+                control: (css) => ({
+                  ...css,
+                  width: 150,
+                }),
+                menu: ({ width, ...css }) => ({
+                  ...css,
+                  width: 150,
+                  //   minWidth: "20%",
+                }),
+              }}
+              // value={subDistrictValue}
+            />
+            <div
+              id="level_msg"
+              className="text-xs text-rose-500 pointer-events-none opacity-0"
+            ></div>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="parent" className={styleLable}>
+            Parent
+          </label>
+          <Select
+            id="parent_id"
+            options={parentOptions}
+            onChange={setParentValue}
+            isDisabled={isDisableLevel}
+            value={parentValue}
+          />
+          <div
+            id="parent_id_msg"
+            className="text-xs text-rose-500 pointer-events-none opacity-0"
+          ></div>
         </div>
         <div className="flex mt-5">
           <div>

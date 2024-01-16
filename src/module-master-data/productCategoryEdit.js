@@ -1,25 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { ApiGet, ApiPost } from "../components/api";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { ApiGet, ApiPut } from "../components/api";
 import { styleInput, styleLable, uriMaster } from "../constanta/constanta";
 import Select from "react-select";
 import { handleCode, handleName } from "../util/regex";
 import { notifyError, notifySuccess } from "../components/alert";
 
-export default function ProductCategoryAdd() {
+export default function ProductCategoryEdit() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const auth = useSelector((state) => state.auth);
 
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
-  const [companyDivisinOptions, setCompanyDivisinOptions] = useState([{}]);
-  const [companyDivisinValue, setCompanyDivisinValue] = useState(null);
+  const [updatedAt, setUpdatedAt] = useState("");
+  const [companyDivisionOptions, setCompanyDivisionOptions] = useState([{}]);
+  const [companyDivisionValue, setCompanyDivisionValue] = useState(null);
+
   useEffect(() => {
-    fetchCompany();
+    fetchDetail();
+    fetchCompanyDivision();
   }, []);
 
-  const fetchCompany = async () => {
+  const fetchDetail = async () => {
+    const response = await ApiGet(
+      `${uriMaster}/productcategory/${id}`,
+      auth.token
+    );
+    if (response.payload.data === null) {
+      return;
+    }
+    const data = response.payload.data;
+    setCode(data.code);
+    setName(data.name);
+    setCompanyDivisionValue({
+      label: data.division_code + " - " + data.division_name,
+      value: data.division_id,
+    });
+    setUpdatedAt(data.updated_at);
+    return;
+  };
+
+  const fetchCompanyDivision = async () => {
     const response = await ApiGet(
       uriMaster + `/companydivision?page=1&limit=-99&order_by=name ASC`,
       auth.token
@@ -31,15 +54,18 @@ export default function ProductCategoryAdd() {
       label: item.code + " - " + item.name,
       value: item.id,
     }));
-    return setCompanyDivisinOptions(data);
+    return setCompanyDivisionOptions(data);
   };
+
   const buttonSave = async () => {
     let reqBody = {
-      division_id: companyDivisinValue.value,
+      id: parseInt(id),
+      division_id: companyDivisionValue.value,
       code: code,
       name: name,
+      updated_at: updatedAt,
     };
-    const response = await ApiPost(
+    const response = await ApiPut(
       `${uriMaster}/productcategory`,
       reqBody,
       auth.token
@@ -59,8 +85,8 @@ export default function ProductCategoryAdd() {
           elemenetMsg.innerHTML = myObject[key];
         }
       });
-      return;
     }
+
     if (response.status === 400) {
       notifyError(response.payload.status.message);
       return;
@@ -86,9 +112,10 @@ export default function ProductCategoryAdd() {
             </label>
             <Select
               id="company_division_id"
-              options={companyDivisinOptions}
-              onChange={setCompanyDivisinValue}
-              // value={subDistrictValue}
+              options={companyDivisionOptions}
+              onChange={setCompanyDivisionValue}
+              value={companyDivisionValue}
+              // defaultValue={companyProfileValue}
             />
             <div
               id="company_division_id_msg"
@@ -125,7 +152,7 @@ export default function ProductCategoryAdd() {
               onChange={(e) => handleName(e, setName, 200)}
             />
             <div
-              id="name_msg"
+              id="code_msg"
               className="text-xs text-rose-500 pointer-events-none opacity-0"
             ></div>
           </div>

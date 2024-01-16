@@ -5,6 +5,10 @@ import { useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router";
 import Pagination from "../components/pagination";
+import { formatDatetime } from "../util/date";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProductCategory() {
   const navigate = useNavigate();
@@ -17,10 +21,9 @@ export default function ProductCategory() {
 
   const fetchListData = async () => {
     const response = await ApiGet(
-      `${uriMaster}/productcategory?page=${currentPage}&order_by=name DESC`,
+      `${uriMaster}/productcategory?page=${currentPage}&order_by=updated_at DESC`,
       auth.token
     );
-    console.log("response -> ", response);
     setData(response.payload.data);
   };
   const fetchCountData = async () => {
@@ -28,14 +31,11 @@ export default function ProductCategory() {
       uriMaster + "/productcategory/count",
       auth.token
     );
-    console.log("response -> ", response.payload.data);
-    // setTotalItems(response.payload.data);
+    setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    setTotalItems(1000);
     fetchListData();
     fetchCountData();
-    console.log(totalItems.toString());
   }, []);
 
   const handlePageClick = (event) => {
@@ -51,38 +51,6 @@ export default function ProductCategory() {
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
       <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
         <div>
-          <button
-            id="dropdownRadioButton"
-            data-dropdown-toggle="dropdownRadio"
-            class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5"
-            type="button"
-          >
-            <svg
-              class="w-3 h-3 text-gray-500 me-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-            </svg>
-            Last 30 days
-            <svg
-              class="w-2.5 h-2.5 ms-2.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
           <button
             type="button"
             onClick={buttonAdd}
@@ -150,12 +118,25 @@ export default function ProductCategory() {
             </th> */}
                 <td class="px-6 py-4 font-medium text-black">{d.code}</td>
                 <td class="px-6 py-4 font-medium text-black">{d.name}</td>
-                <td class="px-6 py-4 font-medium text-black">{d.createdAt}</td>
-                <td class="px-6 py-4 font-medium text-black">{d.updatedAt}</td>
                 <td class="px-6 py-4 font-medium text-black">
-                  <a href="#" class="font-medium text-blue-600 hover:underline">
-                    Edit
-                  </a>
+                  {formatDatetime(d.created_at)}
+                </td>
+                <td class="px-6 py-4 font-medium text-black">
+                  {formatDatetime(d.updated_at)}
+                </td>
+                <td class="px-6 py-4 font-medium text-black">
+                  <Link
+                    to={`/masterdata/productcategory/edit/${d.id}`}
+                    class="font-medium text-blue-600 hover:underline"
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Link>
+                  <Link
+                    to={`/masterdata/productcategory/detail/${d.id}`}
+                    class="ml-4 font-medium text-blue-600 hover:underline"
+                  >
+                    <FontAwesomeIcon icon={faEye} />
+                  </Link>
                 </td>
               </tr>
             );

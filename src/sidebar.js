@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Link, useNavigate } from "react-router-dom";
 export default function Sidebar(props) {
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
@@ -29,11 +30,14 @@ export default function Sidebar(props) {
     <div className="bg-white w-64 h-screen flex flex-col justify-between">
       <div className="flex flex-col">
         <div className="p-6">
-          <button className="text-blue-600 font-bold text-lg">My App</button>
+          <Link to="/home" className="text-blue-600 font-bold text-lg">
+            My App
+          </Link>
+          <div className="font-bold text-lg">{auth.companyBranch.name}</div>
         </div>
         <ul>
-          <li onClick={() => onClickMenu("Dashboard")}>
-            <div className="cursor-pointer flex items-stretch gap-4 pl-5 mt-20 self-start max-md:ml-2.5 max-md:mt-10 border-l-4 border-blue-500">
+          {/* <li onClick={() => onClickMenu("Dashboard")}>
+            <div className="cursor-pointer flex items-stretch gap-4 pl-5 mt-[50px] self-start max-md:ml-2.5 max-md:mt-10 border-l-4 border-blue-500">
               <img
                 loading="lazy"
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c5b697cff3442e0b525c0ff20165bdca0ff172b0ac2c76b77898c746df34b6e?apiKey=57feb64800df4e20be2c6f74ae60e771&"
@@ -46,7 +50,7 @@ export default function Sidebar(props) {
                 Dashboard
               </Link>
             </div>
-          </li>
+          </li> */}
           <li>
             <div
               onClick={() => toggleActive("masterData")}
@@ -94,14 +98,6 @@ export default function Sidebar(props) {
                     to="/masterdata/customer"
                   >
                     Customer
-                  </Link>
-                </li>
-                <li onClick={() => onClickMenu("Salesman")}>
-                  <Link
-                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
-                    to="/masterdata/salesman"
-                  >
-                    Salesman
                   </Link>
                 </li>
               </ul>
@@ -192,6 +188,14 @@ export default function Sidebar(props) {
                     Company
                   </Link>
                 </li>
+                <li onClick={() => onClickMenu("Company Branch")}>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/admin/companybranch"
+                  >
+                    Company Branch
+                  </Link>
+                </li>
                 <li onClick={() => onClickMenu("Company Division")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
@@ -200,12 +204,12 @@ export default function Sidebar(props) {
                     Company Division
                   </Link>
                 </li>
-                <li onClick={() => onClickMenu("Company Branch")}>
+                <li onClick={() => onClickMenu("User")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
-                    to="/admin/companybranch"
+                    to="/admin/user"
                   >
-                    Company Branch
+                    User
                   </Link>
                 </li>
               </ul>
