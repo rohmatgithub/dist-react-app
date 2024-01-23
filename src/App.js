@@ -35,6 +35,14 @@ import ProductCategoryEdit from "./module-master-data/productCategoryEdit";
 import ProductGroupAdd from "./module-master-data/productGroupAdd";
 import ProductGroupDetail from "./module-master-data/productGroupDetail";
 import ProductGroupEdit from "./module-master-data/productGroupEdit";
+import ProductMasterList from "./module-master-data/productMasterList";
+import ProductMasterAdd from "./module-master-data/productMasterAdd";
+import ProductMasterDetail from "./module-master-data/productMasterDetail";
+import ProductMasterEdit from "./module-master-data/productMasterEdit";
+import CustomerList from "./module-master-data/customerList";
+import CustomerAdd from "./module-master-data/customerAdd";
+import CustomerDetail from "./module-master-data/customerDetail";
+import CustomerEdit from "./module-master-data/customerEdit";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
   const [isSelected, setIsSelected] = useState("");
@@ -94,7 +102,7 @@ const App = () => {
                 <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
                   {titleMenu}
                 </div>
-                <div>foto profile</div>
+                {/* <div>foto profile</div> */}
               </div>
               <Routes>
                 <Route path="/selected/branch" element={<SelectBranch />} />
@@ -107,7 +115,7 @@ const App = () => {
             <Sidebar setTitleMenu={setTitleMenu} />
             <div
               style={inlineStyles.container}
-              className="flex flex-col items-stretch w-[83%] ml-5 max-md:w-full max-md:ml-0"
+              className="flex flex-col items-stretch w-[83%] ml-5 max-md:w-full max-md:ml-0  max-h-screen overflow-y-scroll"
             >
               <div
                 id="header"
@@ -116,7 +124,7 @@ const App = () => {
                 <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
                   {titleMenu}
                 </div>
-                <div>foto profile</div>
+                {/* <div>foto profile</div> */}
               </div>
               <Routes>
                 <Route path="/home" element={<Dashboard />} />
@@ -213,6 +221,37 @@ const App = () => {
                 <Route
                   path="/masterdata/productgroup/edit/:id"
                   element={<ProductGroupEdit />}
+                />
+
+                <Route
+                  path="/masterdata/product"
+                  element={<ProductMasterList />}
+                />
+                <Route
+                  path="/masterdata/product/add"
+                  element={<ProductMasterAdd />}
+                />
+                <Route
+                  path="/masterdata/product/detail/:id"
+                  element={<ProductMasterDetail />}
+                />
+                <Route
+                  path="/masterdata/product/edit/:id"
+                  element={<ProductMasterEdit />}
+                />
+
+                <Route path="/masterdata/customer" element={<CustomerList />} />
+                <Route
+                  path="/masterdata/customer/add"
+                  element={<CustomerAdd />}
+                />
+                <Route
+                  path="/masterdata/customer/detail/:id"
+                  element={<CustomerDetail />}
+                />
+                <Route
+                  path="/masterdata/customer/edit/:id"
+                  element={<CustomerEdit />}
                 />
               </Routes>
             </div>

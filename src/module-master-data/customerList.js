@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { uriMaster } from "../constanta/constanta";
 import { ApiGet } from "../components/api";
-import { useSelector } from "react-redux";
-import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import Pagination from "../components/pagination";
-import { formatDatetime } from "../util/date";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { formatDatetime } from "../util/date";
 
-export default function ProductCategory() {
+export default function CustomerList() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState([{}]);
   const auth = useSelector((state) => state.auth);
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,16 +21,20 @@ export default function ProductCategory() {
 
   const fetchListData = async () => {
     const response = await ApiGet(
-      `${uriMaster}/productcategory?page=${currentPage}&order_by=updated_at DESC`,
+      `${uriMaster}/customer?page=${currentPage}&order_by=updated_at DESC`,
       auth.token
     );
+    if (response.status === 401) {
+      dispatch({
+        type: "LOGOUT",
+      });
+      navigate("/");
+      return;
+    }
     setData(response.payload.data);
   };
   const fetchCountData = async () => {
-    const response = await ApiGet(
-      uriMaster + "/productcategory/count",
-      auth.token
-    );
+    const response = await ApiGet(uriMaster + "/customer/count", auth.token);
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
@@ -39,14 +43,14 @@ export default function ProductCategory() {
   }, []);
 
   const handlePageClick = (event) => {
-    console.log(`User requested page number ${event.selected}`);
     setCurrentPage(event.selected + 1);
     // setCurrentPage(event);
   };
   const buttonAdd = (event) => {
     event.preventDefault();
-    navigate("/masterdata/productcategory/add");
+    navigate("/masterdata/customer/add");
   };
+
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
       <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
@@ -54,7 +58,7 @@ export default function ProductCategory() {
           <button
             type="button"
             onClick={buttonAdd}
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 ml-5 focus:outline-none"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none"
           >
             Add
           </button>
@@ -90,10 +94,13 @@ export default function ProductCategory() {
         <thead class="text-xs text-gray-100 uppercase bg-gray-600">
           <tr>
             <th scope="col" class="px-6 py-3">
-              Product Category Code
+              Code
             </th>
             <th scope="col" class="px-6 py-3">
-              Product Category Name
+              Name
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Phone
             </th>
             <th scope="col" class="px-6 py-3">
               Created Date
@@ -111,14 +118,9 @@ export default function ProductCategory() {
             data.map((d, i) => {
               return (
                 <tr class="bg-white border-b hover:bg-gray-50">
-                  {/* <th
-              scope="row"
-              class="px-6 py-4 font-medium text-black whitespace-nowrap"
-            >
-              Apple MacBook Pro 17"
-            </th> */}
                   <td class="px-6 py-4 font-medium text-black">{d.code}</td>
                   <td class="px-6 py-4 font-medium text-black">{d.name}</td>
+                  <td class="px-6 py-4 font-medium text-black">{d.phone}</td>
                   <td class="px-6 py-4 font-medium text-black">
                     {formatDatetime(d.created_at)}
                   </td>
@@ -127,13 +129,13 @@ export default function ProductCategory() {
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
                     <Link
-                      to={`/masterdata/productcategory/edit/${d.id}`}
+                      to={`/masterdata/customer/edit/${d.id}`}
                       class="font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEdit} />
                     </Link>
                     <Link
-                      to={`/masterdata/productcategory/detail/${d.id}`}
+                      to={`/masterdata/customer/detail/${d.id}`}
                       class="ml-4 font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEye} />

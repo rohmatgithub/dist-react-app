@@ -49,7 +49,8 @@ export default function SelectBranch() {
     }
   };
   return (
-    <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
+    <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]"  style={{textAlign: 'center'}}>
+      <div className="font-bold text-2xl mb-16">SELECT COMPANY BRANCH</div>
       <div className="flex flex-wrap min-h-[600px] max-h-[600px] justify-evenly">
         {data.map((item, index) => {
           return (

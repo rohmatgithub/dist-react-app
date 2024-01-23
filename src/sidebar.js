@@ -13,9 +13,6 @@ export default function Sidebar(props) {
 
   const logOutSubmit = (e) => {
     e.preventDefault();
-    // Perform authentication logic here
-    // If authentication is successful, navigate to home page
-    // localStorage.removeItem("isLogin");
     dispatch({
       type: "LOGOUT",
     });
@@ -31,7 +28,7 @@ export default function Sidebar(props) {
       <div className="flex flex-col">
         <div className="p-6">
           <Link to="/home" className="text-blue-600 font-bold text-lg">
-            My App
+            Dist App
           </Link>
           <div className="font-bold text-lg">{auth.companyBranch.name}</div>
         </div>
@@ -68,6 +65,14 @@ export default function Sidebar(props) {
             </div>
             {active === "masterData" && (
               <ul className="pl-4">
+                <li onClick={() => onClickMenu("Division")}>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/admin/companydivision"
+                  >
+                    Division
+                  </Link>
+                </li>
                 <li onClick={() => onClickMenu("Product Category")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
@@ -194,14 +199,6 @@ export default function Sidebar(props) {
                     to="/admin/companybranch"
                   >
                     Company Branch
-                  </Link>
-                </li>
-                <li onClick={() => onClickMenu("Company Division")}>
-                  <Link
-                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
-                    to="/admin/companydivision"
-                  >
-                    Company Division
                   </Link>
                 </li>
                 <li onClick={() => onClickMenu("User")}>

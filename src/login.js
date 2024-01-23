@@ -41,7 +41,7 @@ const Login = () => {
       <div className="rounded-[15px] bg-stone-500 h-3/4 w-3/4 min-h-[700px] max-w-[1200px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex overflow-hidden">
         <div className="bg-gradient-to-t from-[#0D47A1] to-[#1976D2] h-full w-3/5 flex items-center justify-center flex-col">
           <div className="text-white font-sans font-bold text-[40px]">
-            Fantech
+            Distribution App
           </div>
           <div className="text-white font-sans text-[15px]">
             The Most Populer application technology

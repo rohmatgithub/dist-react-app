@@ -32,7 +32,7 @@ export default function ProductGroupAdd() {
   const [companyDivisinoValue, setCompanyDivisinoValue] = useState(null);
   const [parentOptions, setParentOptions] = useState([{}]);
   const [parentValue, setParentValue] = useState(null);
-  const [isDisableLevel, setIsDisableLevel] = useState(true);
+  const [isDisableParent, setIsDisableParent] = useState(true);
   useEffect(() => {
     fetchCompany();
   }, []);
@@ -95,11 +95,10 @@ export default function ProductGroupAdd() {
   const onChangeLevel = async (data) => {
     setLevel(data.value);
     if (data.value > 1) {
-      setIsDisableLevel(false);
+      setIsDisableParent(false);
       await fetchParent(data.value, companyDivisinoValue.value);
     } else {
-      setLevel(0);
-      setIsDisableLevel(true);
+      setIsDisableParent(true);
     }
   };
   const buttonSave = async () => {
@@ -235,7 +234,7 @@ export default function ProductGroupAdd() {
             id="parent_id"
             options={parentOptions}
             onChange={setParentValue}
-            isDisabled={isDisableLevel}
+            isDisabled={isDisableParent}
             value={parentValue}
           />
           <div
