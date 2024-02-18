@@ -5,7 +5,7 @@ import { ApiGet, ApiPost } from "../components/api";
 import { styleInput, styleLable, uriMaster } from "../constanta/constanta";
 import Select from "react-select";
 import {
-  formatRupiah,
+  inputFormatRupiah,
   handleCode,
   handleName,
   handleNumber,
@@ -40,7 +40,9 @@ export default function ProductMasterAdd() {
     value: 0,
   });
   useEffect(() => {
-    fetchCompanyDivision();
+    // fetchCompanyDivision();
+    fetchProductCategory();
+    fetchProductGroup();
   }, []);
 
   const fetchCompanyDivision = async () => {
@@ -66,8 +68,7 @@ export default function ProductMasterAdd() {
 
   const fetchProductCategory = async (divisionID) => {
     const response = await ApiGet(
-      uriMaster +
-        `/productcategory?page=1&limit=-99&order_by=name ASC&filter=division_id eq ${divisionID}`,
+      uriMaster + `/productcategory?page=1&limit=-99&order_by=name ASC`, //&filter=division_id eq ${divisionID}`,
       auth.token
     );
     if (response.payload.data === null) {
@@ -82,8 +83,7 @@ export default function ProductMasterAdd() {
 
   const fetchProductGroup = async (groupID) => {
     const response = await ApiGet(
-      uriMaster +
-        `/productgroup?page=1&limit=-99&order_by=name ASC&filter=division_id eq ${groupID}, level eq 3`,
+      uriMaster + `/productgroup?page=1&limit=-99&order_by=name ASC`, //&filter=division_id eq ${groupID}, level eq 3`,
       auth.token
     );
     if (response.payload.data === null) {
@@ -98,7 +98,7 @@ export default function ProductMasterAdd() {
 
   const buttonSave = async () => {
     let reqBody = {
-      division_id: companyDivisionValue.value,
+      // division_id: companyDivisionValue.value,
       category_id: productCategoryValue.value,
       group_id: productGroupValue.value,
       code: code,
@@ -147,7 +147,7 @@ export default function ProductMasterAdd() {
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
-          <div>
+          {/* <div>
             <label htmlFor="division" className={styleLable}>
               Division
             </label>
@@ -161,7 +161,7 @@ export default function ProductMasterAdd() {
               id="division_id_msg"
               className="text-xs text-rose-500 pointer-events-none opacity-0"
             ></div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="category" className={styleLable}>
               Product Category
@@ -236,7 +236,7 @@ export default function ProductMasterAdd() {
               id="selling_price"
               className={styleInput}
               value={sellingPrice}
-              onChange={(e) => formatRupiah(e, setSellingPrice)}
+              onChange={(e) => inputFormatRupiah(e, setSellingPrice)}
             />
             <div
               id="selling_price_msg"
@@ -253,7 +253,7 @@ export default function ProductMasterAdd() {
               id="buying_price"
               className={styleInput}
               value={buyingPrice}
-              onChange={(e) => formatRupiah(e, setBuyingPrice)}
+              onChange={(e) => inputFormatRupiah(e, setBuyingPrice)}
             />
             <div
               id="buying_price_msg"

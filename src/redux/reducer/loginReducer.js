@@ -2,7 +2,7 @@ const authState = {
   token: null,
   isLogin: false,
   isSelected: false,
-  companyBranch: {},
+  company: {},
   userProfile: {},
 };
 
@@ -12,20 +12,21 @@ const authReducer = (state = authState, action) => {
       return {
         token: action.authorization,
         isLogin: true,
+        company: action.company,
       };
     case "LOGOUT":
       return {
         token: "",
         isLogin: false,
         isSelected: false,
-        companyBranch: {},
+        company: {},
         userProfile: {},
       };
     case "UPDATE_COMPANY_BRANCH":
       return {
         ...state,
         isSelected: action.isSelected,
-        companyBranch: action.companyBranch,
+        company: action.company,
       };
     case "UPDATE_PERSON_PROFILE":
       return {

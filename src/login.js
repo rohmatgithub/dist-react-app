@@ -28,12 +28,15 @@ const Login = () => {
       setMsgError(resp.payload.status.message);
       return;
     }
+
+    console.log(resp);
     dispatch({
       type: "LOGIN",
       authorization: resp.authToken,
+      company: resp.payload.data,
     });
 
-    navigate("/selected/branch");
+    navigate("/home");
   };
 
   return (

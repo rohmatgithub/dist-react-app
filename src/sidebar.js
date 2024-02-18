@@ -30,7 +30,7 @@ export default function Sidebar(props) {
           <Link to="/home" className="text-blue-600 font-bold text-lg">
             Dist App
           </Link>
-          <div className="font-bold text-lg">{auth.companyBranch.name}</div>
+          <div className="font-bold text-lg">{auth?.company?.name}</div>
         </div>
         <ul>
           {/* <li onClick={() => onClickMenu("Dashboard")}>
@@ -65,14 +65,14 @@ export default function Sidebar(props) {
             </div>
             {active === "masterData" && (
               <ul className="pl-4">
-                <li onClick={() => onClickMenu("Division")}>
+                {/* <li onClick={() => onClickMenu("Division")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/admin/companydivision"
                   >
                     Division
                   </Link>
-                </li>
+                </li> */}
                 <li onClick={() => onClickMenu("Product Category")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
@@ -123,6 +123,26 @@ export default function Sidebar(props) {
               </div>
               <span className="transform rotate-90">&#x276F;</span>
             </div>
+            {active === "transaction" && (
+              <ul className="pl-4">
+                <li onClick={() => onClickMenu("Sales Order")}>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/transaction/salesorder"
+                  >
+                    Sales Order
+                  </Link>
+                </li>
+                <li onClick={() => onClickMenu("Sales invoice")}>
+                  <Link
+                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
+                    to="/transaction/salesinvoice"
+                  >
+                    Sales Invoice
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <div
@@ -193,14 +213,14 @@ export default function Sidebar(props) {
                     Company
                   </Link>
                 </li>
-                <li onClick={() => onClickMenu("Company Branch")}>
+                {/* <li onClick={() => onClickMenu("Company Branch")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
                     to="/admin/companybranch"
                   >
                     Company Branch
                   </Link>
-                </li>
+                </li> */}
                 <li onClick={() => onClickMenu("User")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"

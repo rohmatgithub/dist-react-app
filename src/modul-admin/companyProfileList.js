@@ -19,9 +19,9 @@ export default function CompanyProfileList() {
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-  const fetchListData = async () => {
+  const fetchListData = async (page) => {
     const response = await ApiGet(
-      `${uriMaster}/companyprofile?page=${currentPage}&order_by=name ASC`,
+      `${uriMaster}/companyprofile?page=${page}&order_by=name ASC`,
       auth.token
     );
     if (response.statusCode === 401) {
@@ -41,7 +41,7 @@ export default function CompanyProfileList() {
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    fetchListData();
+    fetchListData(currentPage);
     fetchCountData();
   }, []);
 
@@ -51,6 +51,7 @@ export default function CompanyProfileList() {
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected + 1);
+    fetchListData(event.selected + 1);
     // setCurrentPage(event);
   };
   const buttonAdd = (event) => {

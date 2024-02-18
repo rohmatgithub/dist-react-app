@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { uriMaster } from "../constanta/constanta";
+import { uriTrans } from "../constanta/constanta";
 import { ApiGet } from "../components/api";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -9,7 +9,7 @@ import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { formatDatetime } from "../util/date";
 
-export default function ProductGroupList() {
+export default function SalesOrderList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState([{}]);
@@ -21,7 +21,7 @@ export default function ProductGroupList() {
 
   const fetchListData = async (page) => {
     const response = await ApiGet(
-      `${uriMaster}/productgroup?page=${page}&order_by=updated_at DESC`,
+      `${uriTrans}/order?page=${page}&order_by=updated_at DESC`,
       auth.token
     );
     if (response.statusCode === 401) {
@@ -34,10 +34,7 @@ export default function ProductGroupList() {
     setData(response.payload.data);
   };
   const fetchCountData = async () => {
-    const response = await ApiGet(
-      uriMaster + "/productgroup/count",
-      auth.token
-    );
+    const response = await ApiGet(uriTrans + "/order/count", auth.token);
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
@@ -51,7 +48,7 @@ export default function ProductGroupList() {
   };
   const buttonAdd = (event) => {
     event.preventDefault();
-    navigate("/masterdata/productgroup/add");
+    navigate("/transaction/salesorder/add");
   };
 
   return (
@@ -100,16 +97,19 @@ export default function ProductGroupList() {
               Division
             </th> */}
             <th scope="col" class="px-6 py-3">
-              Code
+              Order Number
             </th>
             <th scope="col" class="px-6 py-3">
-              Name
+              Order Date
             </th>
             <th scope="col" class="px-6 py-3">
-              Created Date
+              Customer Name
             </th>
             <th scope="col" class="px-6 py-3">
-              Updated Date
+              Total Gross Amount
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Total Net Amount
             </th>
             <th scope="col" class="px-6 py-3">
               Action
@@ -124,23 +124,30 @@ export default function ProductGroupList() {
                   {/* <td class="px-6 py-4 font-medium text-black">
                     {d?.division?.code + " - " + d?.division?.name}
                   </td> */}
-                  <td class="px-6 py-4 font-medium text-black">{d.code}</td>
-                  <td class="px-6 py-4 font-medium text-black">{d.name}</td>
                   <td class="px-6 py-4 font-medium text-black">
-                    {formatDatetime(d.created_at)}
+                    {d.order_number}
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
-                    {formatDatetime(d.updated_at)}
+                    {d.order_date}
+                  </td>
+                  <td class="px-6 py-4 font-medium text-black">
+                    {d.customer_name}
+                  </td>
+                  <td class="px-6 py-4 font-medium text-black">
+                    {d.total_gross_amount}
+                  </td>
+                  <td class="px-6 py-4 font-medium text-black">
+                    {d.total_net_amount}
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
                     <Link
-                      to={`/masterdata/productgroup/edit/${d.id}`}
+                      to={`/transaction/salesorder/edit/${d.id}`}
                       class="font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEdit} />
                     </Link>
                     <Link
-                      to={`/masterdata/productgroup/detail/${d.id}`}
+                      to={`/transaction/salesorder/detail/${d.id}`}
                       class="ml-4 font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEye} />

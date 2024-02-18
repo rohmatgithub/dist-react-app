@@ -19,9 +19,9 @@ export default function ProductCategory() {
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-  const fetchListData = async () => {
+  const fetchListData = async (page) => {
     const response = await ApiGet(
-      `${uriMaster}/productcategory?page=${currentPage}&order_by=updated_at DESC`,
+      `${uriMaster}/productcategory?page=${page}&order_by=updated_at DESC`,
       auth.token
     );
     setData(response.payload.data);
@@ -34,14 +34,13 @@ export default function ProductCategory() {
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    fetchListData();
+    fetchListData(currentPage);
     fetchCountData();
   }, []);
 
   const handlePageClick = (event) => {
-    console.log(`User requested page number ${event.selected}`);
     setCurrentPage(event.selected + 1);
-    // setCurrentPage(event);
+    fetchListData(event.selected + 1);
   };
   const buttonAdd = (event) => {
     event.preventDefault();

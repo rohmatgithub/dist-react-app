@@ -33,14 +33,14 @@ export default function ProductMasterDetail() {
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
 
       <div className="flex flex-col min-h-[300px] justify-between">
-        <div>
+        {/* <div>
           <label htmlFor="division" className={styleLable}>
             Division
           </label>
           <div className={styleInput}>
             {data?.division?.code + " - " + data?.division?.name}
           </div>
-        </div>
+        </div> */}
         <div>
           <label htmlFor="category" className={styleLable}>
             Product Category

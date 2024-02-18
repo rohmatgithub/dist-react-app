@@ -20,9 +20,9 @@ export default function CompanyBranchList() {
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-  const fetchListData = async () => {
+  const fetchListData = async (page) => {
     const response = await ApiGet(
-      `${uriMaster}/companybranch?page=${currentPage}&order_by=updated_at DESC`,
+      `${uriMaster}/companybranch?page=${page}&order_by=updated_at DESC`,
       auth.token
     );
     if (response.status === 401) {
@@ -42,16 +42,13 @@ export default function CompanyBranchList() {
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    fetchListData();
+    fetchListData(currentPage);
     fetchCountData();
-  }, []);
-
-  useEffect(() => {
-    return () => {};
   }, []);
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected + 1);
+    fetchListData(event.selected + 1);
     // setCurrentPage(event);
   };
   const buttonAdd = (event) => {

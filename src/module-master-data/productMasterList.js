@@ -19,9 +19,9 @@ export default function ProductMasterList() {
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-  const fetchListData = async () => {
+  const fetchListData = async (page) => {
     const response = await ApiGet(
-      `${uriMaster}/product?page=${currentPage}&order_by=updated_at DESC`,
+      `${uriMaster}/product?page=${page}&order_by=updated_at DESC`,
       auth.token
     );
     if (response.status === 401) {
@@ -34,20 +34,17 @@ export default function ProductMasterList() {
     setData(response.payload.data);
   };
   const fetchCountData = async () => {
-    const response = await ApiGet(
-      uriMaster + "/product/count",
-      auth.token
-    );
+    const response = await ApiGet(uriMaster + "/product/count", auth.token);
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    fetchListData();
+    fetchListData(currentPage);
     fetchCountData();
   }, []);
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected + 1);
-    // setCurrentPage(event);
+    fetchListData(event.selected + 1);
   };
   const buttonAdd = (event) => {
     event.preventDefault();
@@ -97,7 +94,7 @@ export default function ProductMasterList() {
         <thead class="text-xs text-gray-100 uppercase bg-gray-600">
           <tr>
             <th scope="col" class="px-6 py-3">
-              Division
+              Category
             </th>
             <th scope="col" class="px-6 py-3">
               Code
@@ -122,7 +119,7 @@ export default function ProductMasterList() {
               return (
                 <tr class="bg-white border-b hover:bg-gray-50">
                   <td class="px-6 py-4 font-medium text-black">
-                    {d?.division?.code + " - " + d?.division?.name}
+                    {d?.category?.code + " - " + d?.category?.name}
                   </td>
                   <td class="px-6 py-4 font-medium text-black">{d.code}</td>
                   <td class="px-6 py-4 font-medium text-black">{d.name}</td>

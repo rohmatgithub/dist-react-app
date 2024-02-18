@@ -35,14 +35,14 @@ export default function ProductGroupDetail() {
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
-          <div>
+          {/* <div>
             <label htmlFor="division" className={styleLable}>
               Division
             </label>
             <div className={styleInput}>
               {data?.division?.code + " - " + data?.division?.name}
             </div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="parent" className={styleLable}>
               Parent
@@ -55,19 +55,19 @@ export default function ProductGroupDetail() {
             <label htmlFor="code" className={styleLable}>
               Code
             </label>
-            <div className={styleInput}>{data.code}</div>
+            <div className={styleInput}>{data?.code}</div>
           </div>
           <div>
             <label htmlFor="name" className={styleLable}>
               Name
             </label>
-            <div className={styleInput}>{data.name}</div>
+            <div className={styleInput}>{data?.name}</div>
           </div>
           <div>
             <label htmlFor="level" className={styleLable}>
               Level
             </label>
-            <div className={styleInput}>{data.level}</div>
+            <div className={styleInput}>{data?.level}</div>
           </div>
           <div>
             <label htmlFor="created_at" className={styleLable}>

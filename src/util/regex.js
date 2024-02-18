@@ -32,7 +32,7 @@ export const handleName = (event, setValue, maxLength) => {
 export const handleNumber = (event, setValue, maxLength) => {
   let value = event.target.value;
   // Hanya ambil angka
-  value = value.replace(/[^0-9]/g, "");
+  value = value.replace(/^0+|[^\d]+/g, "");
 
   if (maxLength === undefined) {
     maxLength = 11;
@@ -43,7 +43,7 @@ export const handleNumber = (event, setValue, maxLength) => {
   setValue(value);
 };
 
-export const formatRupiah = (event, setValue, maxLength) => {
+export const inputFormatRupiah = (event, setValue, maxLength) => {
   let value = event.target.value;
   // Hanya ambil angka
   value = value.replace(/[^0-9]/g, "");
@@ -66,4 +66,14 @@ export const formatRupiah = (event, setValue, maxLength) => {
 export const unformatRupiah = (number) => {
   const numericValue = number.replace(/[^0-9]/g, "");
   return numericValue;
+};
+
+export const formatRupiah = (value) => {
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  });
+
+  return formatter.format(value);
 };

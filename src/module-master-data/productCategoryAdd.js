@@ -15,27 +15,27 @@ export default function ProductCategoryAdd() {
   const [name, setName] = useState("");
   const [companyDivisinOptions, setCompanyDivisinOptions] = useState([{}]);
   const [companyDivisinValue, setCompanyDivisinValue] = useState(null);
-  useEffect(() => {
-    fetchCompany();
-  }, []);
+  // useEffect(() => {
+  //   fetchCompany();
+  // }, []);
 
-  const fetchCompany = async () => {
-    const response = await ApiGet(
-      uriMaster + `/companydivision?page=1&limit=-99&order_by=name ASC`,
-      auth.token
-    );
-    if (response.payload.data === null) {
-      return;
-    }
-    const data = response.payload.data.map((item) => ({
-      label: item.code + " - " + item.name,
-      value: item.id,
-    }));
-    return setCompanyDivisinOptions(data);
-  };
+  // const fetchCompany = async () => {
+  //   const response = await ApiGet(
+  //     uriMaster + `/companydivision?page=1&limit=-99&order_by=name ASC`,
+  //     auth.token
+  //   );
+  //   if (response.payload.data === null) {
+  //     return;
+  //   }
+  //   const data = response.payload.data.map((item) => ({
+  //     label: item.code + " - " + item.name,
+  //     value: item.id,
+  //   }));
+  //   return setCompanyDivisinOptions(data);
+  // };
   const buttonSave = async () => {
     let reqBody = {
-      division_id: companyDivisinValue.value,
+      // division_id: companyDivisinValue.value,
       code: code,
       name: name,
     };
@@ -80,7 +80,7 @@ export default function ProductCategoryAdd() {
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
-          <div>
+          {/* <div>
             <label htmlFor="company_division" className={styleLable}>
               Division
             </label>
@@ -94,7 +94,7 @@ export default function ProductCategoryAdd() {
               id="company_division_id_msg"
               className="text-xs text-rose-500 pointer-events-none opacity-0"
             ></div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="code" className={styleLable}>
               Code

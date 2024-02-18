@@ -40,14 +40,14 @@ export default function ProductCategoryDetail() {
 
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
-          <div>
+          {/* <div>
             <label htmlFor="division" className={styleLable}>
               Division
             </label>
             <div className={styleInput}>
               {data.division_code + " - " + data.division_name}
             </div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="code" className={styleLable}>
               Code

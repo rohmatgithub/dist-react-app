@@ -34,7 +34,7 @@ export default function ProductGroupAdd() {
   const [parentValue, setParentValue] = useState(null);
   const [isDisableParent, setIsDisableParent] = useState(true);
   useEffect(() => {
-    fetchCompany();
+    // fetchCompany();
   }, []);
 
   const fetchCompany = async () => {
@@ -89,7 +89,7 @@ export default function ProductGroupAdd() {
   };
 
   const onChangeCompanyDivision = async (data) => {
-    setCompanyDivisinoValue(data);
+    // setCompanyDivisinoValue(data);
     await fetchParent(level, data.value);
   };
   const onChangeLevel = async (data) => {
@@ -103,7 +103,7 @@ export default function ProductGroupAdd() {
   };
   const buttonSave = async () => {
     let reqBody = {
-      division_id: companyDivisinoValue.value,
+      // division_id: companyDivisinoValue.value,
       parent_id: parentValue === null ? 0 : parentValue.value,
       level: level,
       code: code,
@@ -150,7 +150,7 @@ export default function ProductGroupAdd() {
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
-          <div>
+          {/* <div>
             <label htmlFor="company_division" className={styleLable}>
               Division
             </label>
@@ -164,7 +164,7 @@ export default function ProductGroupAdd() {
               id="company_division_id_msg"
               className="text-xs text-rose-500 pointer-events-none opacity-0"
             ></div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="code" className={styleLable}>
               Code

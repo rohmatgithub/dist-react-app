@@ -20,7 +20,7 @@ export default function ProductCategoryEdit() {
 
   useEffect(() => {
     fetchDetail();
-    fetchCompanyDivision();
+    // fetchCompanyDivision();
   }, []);
 
   const fetchDetail = async () => {
@@ -60,7 +60,7 @@ export default function ProductCategoryEdit() {
   const buttonSave = async () => {
     let reqBody = {
       id: parseInt(id),
-      division_id: companyDivisionValue.value,
+      // division_id: companyDivisionValue.value,
       code: code,
       name: name,
       updated_at: updatedAt,
@@ -106,7 +106,7 @@ export default function ProductCategoryEdit() {
     <div className="items-stretch bg-white flex flex-col pl-14 pr-20 py-10 max-md:px-5 mt-[20px]">
       <div className="flex flex-col min-h-[300px] justify-between">
         <div>
-          <div>
+          {/* <div>
             <label htmlFor="company_division" className={styleLable}>
               Division
             </label>
@@ -121,7 +121,7 @@ export default function ProductCategoryEdit() {
               id="company_division_id_msg"
               className="text-xs text-rose-500 pointer-events-none opacity-0"
             ></div>
-          </div>
+          </div> */}
           <div>
             <label htmlFor="code" className={styleLable}>
               Code

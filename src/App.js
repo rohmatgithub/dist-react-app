@@ -43,6 +43,8 @@ import CustomerList from "./module-master-data/customerList";
 import CustomerAdd from "./module-master-data/customerAdd";
 import CustomerDetail from "./module-master-data/customerDetail";
 import CustomerEdit from "./module-master-data/customerEdit";
+import SalesOrderAdd from "./module-transaction/salesOrderAdd";
+import SalesOrderList from "./module-transaction/salesOrderList";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
   const [isSelected, setIsSelected] = useState("");
@@ -85,7 +87,7 @@ const App = () => {
   return (
     <div className="bg-stone-50 max-md:pr-5">
       <Router>
-        {!isAuthenticated ? (
+        {/* {!isAuthenticated ? (
           <Routes>
             <Route path="/" element={<Login />} />
           </Routes>
@@ -102,7 +104,7 @@ const App = () => {
                 <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
                   {titleMenu}
                 </div>
-                {/* <div>foto profile</div> */}
+                <div>foto profile</div>
               </div>
               <Routes>
                 <Route path="/selected/branch" element={<SelectBranch />} />
@@ -124,7 +126,7 @@ const App = () => {
                 <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
                   {titleMenu}
                 </div>
-                {/* <div>foto profile</div> */}
+                <div>foto profile</div>
               </div>
               <Routes>
                 <Route path="/home" element={<Dashboard />} />
@@ -252,6 +254,135 @@ const App = () => {
                 <Route
                   path="/masterdata/customer/edit/:id"
                   element={<CustomerEdit />}
+                />
+              </Routes>
+            </div>
+          </div>
+        )} */}
+        {!isAuthenticated ? (
+          <Routes>
+            <Route path="/" element={<Login />} />
+          </Routes>
+        ) : (
+          // Other code here
+          <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+            <Sidebar setTitleMenu={setTitleMenu} />
+            <div
+              style={inlineStyles.container}
+              className="flex flex-col items-stretch w-[83%] ml-5 max-md:w-full max-md:ml-0  max-h-screen overflow-y-scroll"
+            >
+              <div
+                id="header"
+                className="justify-between flex gap-5 pt-1.5 items-start max-md:max-w-full max-md:flex-wrap"
+              >
+                <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
+                  {titleMenu}
+                </div>
+                <div>foto profile</div>
+              </div>
+              <Routes>
+                <Route path="/home" element={<Dashboard />} />
+                <Route
+                  path="/admin/companyprofile"
+                  element={<CompanyProfileList />}
+                />
+                <Route
+                  path="/admin/companyprofile/add"
+                  element={<CompanyProfileAdd />}
+                />
+                <Route
+                  path="/admin/companyprofile/edit/:id"
+                  element={<CompanyProfileEdit />}
+                />
+                <Route
+                  path="/admin/companyprofile/detail/:id"
+                  element={<CompanyProfileDetail />}
+                />
+                <Route path="/admin/company" element={<CompanyList />} />
+                <Route path="/admin/company/add" element={<CompanyAdd />} />
+                <Route
+                  path="/admin/company/edit/:id"
+                  element={<CompanyEdit />}
+                />
+                <Route
+                  path="/admin/company/detail/:id"
+                  element={<CompanyDetail />}
+                />
+                <Route path="/admin/user" element={<UserList />} />
+                <Route path="/admin/user/add" element={<UserAdd />} />
+                <Route path="/admin/user/detail/:id" element={<UserDetail />} />
+                <Route path="/admin/user/edit/:id" element={<UserEdit />} />
+                <Route
+                  path="/masterdata/productcategory"
+                  element={<ProductCategory />}
+                />
+                <Route
+                  path="/masterdata/productcategory/detail/:id"
+                  element={<ProductCategoryDetail />}
+                />
+                <Route
+                  path="/masterdata/productcategory/add"
+                  element={<ProductCategoryAdd />}
+                />
+                <Route
+                  path="/masterdata/productcategory/edit/:id"
+                  element={<ProductCategoryEdit />}
+                />
+                <Route
+                  path="/masterdata/productgroup"
+                  element={<ProductGroupList />}
+                />
+                <Route
+                  path="/masterdata/productgroup/add"
+                  element={<ProductGroupAdd />}
+                />
+                <Route
+                  path="/masterdata/productgroup/detail/:id"
+                  element={<ProductGroupDetail />}
+                />
+                <Route
+                  path="/masterdata/productgroup/edit/:id"
+                  element={<ProductGroupEdit />}
+                />
+
+                <Route
+                  path="/masterdata/product"
+                  element={<ProductMasterList />}
+                />
+                <Route
+                  path="/masterdata/product/add"
+                  element={<ProductMasterAdd />}
+                />
+                <Route
+                  path="/masterdata/product/detail/:id"
+                  element={<ProductMasterDetail />}
+                />
+                <Route
+                  path="/masterdata/product/edit/:id"
+                  element={<ProductMasterEdit />}
+                />
+
+                <Route path="/masterdata/customer" element={<CustomerList />} />
+                <Route
+                  path="/masterdata/customer/add"
+                  element={<CustomerAdd />}
+                />
+                <Route
+                  path="/masterdata/customer/detail/:id"
+                  element={<CustomerDetail />}
+                />
+                <Route
+                  path="/masterdata/customer/edit/:id"
+                  element={<CustomerEdit />}
+                />
+
+                <Route
+                  path="/transaction/salesorder/add"
+                  element={<SalesOrderAdd />}
+                />
+                <Route
+                  path="/transaction/salesorder"
+                  element={<SalesOrderList />}
                 />
               </Routes>
             </div>
