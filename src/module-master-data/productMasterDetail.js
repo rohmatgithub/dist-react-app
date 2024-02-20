@@ -14,7 +14,6 @@ export default function ProductMasterDetail() {
   useEffect(() => {
     const fetchDetails = async () => {
       const response = await ApiGet(`${uriMaster}/product/${id}`, auth.token);
-      console.log(response);
       setData(response.payload.data);
     };
 

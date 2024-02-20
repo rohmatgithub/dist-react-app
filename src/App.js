@@ -45,6 +45,10 @@ import CustomerDetail from "./module-master-data/customerDetail";
 import CustomerEdit from "./module-master-data/customerEdit";
 import SalesOrderAdd from "./module-transaction/salesOrderAdd";
 import SalesOrderList from "./module-transaction/salesOrderList";
+import SalesOrderDetail from "./module-transaction/salesOrderDetail";
+import SalesInvoiceList from "./module-transaction/salesInvoiceList";
+import SalesInvoiceDetail from "./module-transaction/salesInvoiceDetail";
+import SalesOrderEdit from "./module-transaction/salesOrderEdit";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
   const [isSelected, setIsSelected] = useState("");
@@ -383,6 +387,22 @@ const App = () => {
                 <Route
                   path="/transaction/salesorder"
                   element={<SalesOrderList />}
+                />
+                <Route
+                  path="/transaction/salesorder/detail/:id"
+                  element={<SalesOrderDetail />}
+                />
+                <Route
+                  path="/transaction/salesorder/edit/:id"
+                  element={<SalesOrderEdit />}
+                />
+                <Route
+                  path="/transaction/salesinvoice/detail/:id"
+                  element={<SalesInvoiceDetail />}
+                />
+                <Route
+                  path="/transaction/salesinvoice"
+                  element={<SalesInvoiceList />}
                 />
               </Routes>
             </div>

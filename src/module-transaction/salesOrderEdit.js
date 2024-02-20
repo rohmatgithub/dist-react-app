@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { ApiGet, ApiPost } from "../components/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { ApiGet, ApiPost, ApiPut } from "../components/api";
 import {
   styleInput,
   styleLable,
@@ -26,8 +26,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ModalProduct from "./modalProduct";
 
-export default function SalesOrderAdd() {
+export default function SalesOrderEdit() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const auth = useSelector((state) => state.auth);
 
   const [orderNumber, setOrderNumber] = useState("");
@@ -43,7 +44,35 @@ export default function SalesOrderAdd() {
   const [qty, setQty] = useState(0);
   const [valueSearch, setvalueSearch] = useState("");
   const [isHiddenModalProduct, setIsHiddenModalProduct] = useState(true);
+  const [updatedAt, setUpdatedAt] = useState(null);
   useEffect(() => {
+    const fetchDetails = async () => {
+      const response = await ApiGet(`${uriTrans}/order/${id}`, auth.token);
+      let data = response.payload.data;
+      setOrderNumber(data.order_number);
+      setOrderDate(data.order_date);
+      setCustomerValue({
+        label: data.customer_code + " - " + data.customer_name,
+        value: data.customer_id,
+      });
+      setUpdatedAt(data.updated_at);
+      data.list_items?.map((d) => {
+        setListItem([
+          ...listItem,
+          {
+            product_id: d.product_id,
+            code: d.product_code,
+            name: d.product_name,
+            selling_price: d.selling_price,
+            qty: parseInt(d.qty),
+            line_gross_amount: d.line_gross_amount,
+            line_net_amount: d.line_net_amount,
+          },
+        ]);
+      });
+    };
+
+    fetchDetails();
     fetchCustomer();
     fetchProduct();
   }, []);
@@ -124,6 +153,8 @@ export default function SalesOrderAdd() {
       total_net_amount += item.line_net_amount;
     });
     let reqBody = {
+      id: parseInt(id),
+      updated_at: updatedAt,
       order_number: orderNumber,
       order_date: orderDate,
       customer_id: customerValue.value,
@@ -131,7 +162,7 @@ export default function SalesOrderAdd() {
       total_net_amount: total_net_amount,
       list_item: listItem,
     };
-    const response = await ApiPost(`${uriTrans}/order`, reqBody, auth.token);
+    const response = await ApiPut(`${uriTrans}/order`, reqBody, auth.token);
 
     if (response.payload.status.detail !== null) {
       const myObject = response.payload.status.detail;
@@ -270,7 +301,7 @@ export default function SalesOrderAdd() {
                 id="customer_id"
                 options={customerOptions}
                 onChange={setCustomerValue}
-                // value={subDistrictValue}
+                value={customerValue}
               />
               <div
                 id="customer_id_msg"

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { formatDatetime } from "../util/date";
 import { formatRupiah } from "../util/regex";
 
-export default function SalesOrderList() {
+export default function SalesInvoiceList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState([{}]);
@@ -22,7 +22,7 @@ export default function SalesOrderList() {
 
   const fetchListData = async (page) => {
     const response = await ApiGet(
-      `${uriTrans}/order?page=${page}&order_by=updated_at DESC`,
+      `${uriTrans}/invoice?page=${page}&order_by=updated_at DESC`,
       auth.token
     );
     if (response.statusCode === 401) {
@@ -35,7 +35,7 @@ export default function SalesOrderList() {
     setData(response.payload.data);
   };
   const fetchCountData = async () => {
-    const response = await ApiGet(uriTrans + "/order/count", auth.token);
+    const response = await ApiGet(uriTrans + "/invoice/count", auth.token);
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
@@ -47,23 +47,10 @@ export default function SalesOrderList() {
     setCurrentPage(event.selected + 1);
     fetchListData(event.selected + 1);
   };
-  const buttonAdd = (event) => {
-    event.preventDefault();
-    navigate("/transaction/salesorder/add");
-  };
 
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
       <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
-        <div>
-          <button
-            type="button"
-            onClick={buttonAdd}
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none"
-          >
-            Add
-          </button>
-        </div>
         <label for="table-search" class="sr-only">
           Search
         </label>
@@ -87,7 +74,7 @@ export default function SalesOrderList() {
             type="text"
             id="table-search"
             class="outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-600 focus:border-gray-600"
-            placeholder="Search by order number"
+            placeholder="Search by invoice number"
           />
         </div>
       </div>
@@ -98,10 +85,10 @@ export default function SalesOrderList() {
               Division
             </th> */}
             <th scope="col" class="px-6 py-3">
-              Order Number
+              Invoice Number
             </th>
             <th scope="col" class="px-6 py-3">
-              Order Date
+              Invoice Date
             </th>
             <th scope="col" class="px-6 py-3">
               Customer Name
@@ -126,10 +113,10 @@ export default function SalesOrderList() {
                     {d?.division?.code + " - " + d?.division?.name}
                   </td> */}
                   <td class="px-6 py-4 font-medium text-black">
-                    {d.order_number}
+                    {d.invoice_number}
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
-                    {d.order_date}
+                    {d.invoice_date}
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
                     {d.customer_name}
@@ -142,13 +129,7 @@ export default function SalesOrderList() {
                   </td>
                   <td class="px-6 py-4 font-medium text-black">
                     <Link
-                      to={`/transaction/salesorder/edit/${d.id}`}
-                      class="font-medium text-blue-600 hover:underline"
-                    >
-                      <FontAwesomeIcon icon={faEdit} />
-                    </Link>
-                    <Link
-                      to={`/transaction/salesorder/detail/${d.id}`}
+                      to={`/transaction/salesinvoice/detail/${d.id}`}
                       class="ml-4 font-medium text-blue-600 hover:underline"
                     >
                       <FontAwesomeIcon icon={faEye} />
