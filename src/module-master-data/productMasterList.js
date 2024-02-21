@@ -19,9 +19,9 @@ export default function ProductMasterList() {
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-  const fetchListData = async (page) => {
+  const fetchListData = async (page, strSearch) => {
     const response = await ApiGet(
-      `${uriMaster}/product?page=${page}&order_by=updated_at DESC`,
+      `${uriMaster}/product?page=${page}&order_by=updated_at DESC${strSearch}`,
       auth.token
     );
     if (response.status === 401) {
@@ -33,13 +33,16 @@ export default function ProductMasterList() {
     }
     setData(response.payload.data);
   };
-  const fetchCountData = async () => {
-    const response = await ApiGet(uriMaster + "/product/count", auth.token);
+  const fetchCountData = async (strSearch) => {
+    const response = await ApiGet(
+      uriMaster + `/product/count${strSearch}`,
+      auth.token
+    );
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    fetchListData(currentPage);
-    fetchCountData();
+    fetchListData(currentPage, "");
+    fetchCountData("");
   }, []);
 
   const handlePageClick = (event) => {
@@ -49,6 +52,21 @@ export default function ProductMasterList() {
   const buttonAdd = (event) => {
     event.preventDefault();
     navigate("/masterdata/product/add");
+  };
+
+  const handleSearch = (event) => {
+    let valueSearch = event.target.value;
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    let strSearch = "";
+    if (valueSearch !== "") {
+      strSearch = `filter=name like ${valueSearch}, code like ${valueSearch}`;
+    }
+
+    fetchListData(1, `&${strSearch}`);
+    fetchCountData(`?${strSearch}`);
   };
 
   return (
@@ -86,7 +104,8 @@ export default function ProductMasterList() {
             type="text"
             id="table-search"
             class="outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-600 focus:border-gray-600"
-            placeholder="Search for items"
+            placeholder="Search by code and name..."
+            onKeyUp={handleSearch}
           />
         </div>
       </div>

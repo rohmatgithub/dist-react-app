@@ -282,7 +282,7 @@ const App = () => {
                 <div className="text-black text-2xl max-md:max-w-full max-md:mt-10">
                   {titleMenu}
                 </div>
-                <div>foto profile</div>
+                <div></div>
               </div>
               <Routes>
                 <Route path="/home" element={<Dashboard />} />

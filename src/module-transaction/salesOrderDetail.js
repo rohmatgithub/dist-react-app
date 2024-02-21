@@ -29,11 +29,7 @@ export default function SalesOrderDetail() {
     navigate("/transaction/salesorder");
   };
   const buttonCreateInvoices = async (e) => {
-    const response = await ApiPost(
-      `${uriTrans}/invoice/${id}`,
-      "",
-      auth.token
-    );
+    const response = await ApiPost(`${uriTrans}/invoice/${id}`, "", auth.token);
 
     if (response.payload.status.detail !== null) {
       const myObject = response.payload.status.detail;
@@ -88,6 +84,17 @@ export default function SalesOrderDetail() {
             <label className={styleLable}>Total Net Amount</label>
             <div className={styleInput}>{data?.total_gross_amount}</div>
           </div>
+          <div>
+            <label className={styleLable}>Is Generated</label>
+            <div>
+              <input type="checkbox" value="" class="sr-only peer" />
+              {data?.is_generated ? (
+                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 peer-checked:bg-blue-600"></div>
+              ) : (
+                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              )}
+            </div>
+          </div>
         </div>
         <div className="min-h-80 mt-10 w-full">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
@@ -136,30 +143,37 @@ export default function SalesOrderDetail() {
         </div>
       </div>
       <div className="flex mt-5">
-        <div>
-          <button
-            className="bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white"
-            onClick={buttonEdit}
-          >
-            Edit
-          </button>
-        </div>
-        <div className="ml-5">
-          <button
-            className="bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[15px] text-white"
-            onClick={buttonCreateInvoices}
-          >
-            Generate Invoice
-          </button>
-        </div>
-        <div className="ml-5">
-          <button
-            className="bg-gray-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white"
-            onClick={buttonCancel}
-          >
-            Cancel
-          </button>
-        </div>
+        {data?.is_generated ? (
+          <div>
+            <button className="opacity-50 cursor-not-allowed bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white">
+              Edit
+            </button>
+            <button className="opacity-50 cursor-not-allowed ml-5 bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[15px] text-white">
+              Generate Invoice
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button
+              className="bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white"
+              onClick={buttonEdit}
+            >
+              Edit
+            </button>
+            <button
+              className="ml-5 bg-blue-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[15px] text-white"
+              onClick={buttonCreateInvoices}
+            >
+              Generate Invoice
+            </button>
+          </div>
+        )}
+        <button
+          className="ml-5 bg-gray-500 border-black h-[40px] w-[150px] mb-[20px] rounded-[25px] text-[20px] text-white"
+          onClick={buttonCancel}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );

@@ -20,9 +20,9 @@ export default function SalesInvoiceList() {
   const itemsPerPage = 10;
   const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-  const fetchListData = async (page) => {
+  const fetchListData = async (page, strSearch) => {
     const response = await ApiGet(
-      `${uriTrans}/invoice?page=${page}&order_by=updated_at DESC`,
+      `${uriTrans}/invoice?page=${page}&order_by=updated_at DESC${strSearch}`,
       auth.token
     );
     if (response.statusCode === 401) {
@@ -34,18 +34,36 @@ export default function SalesInvoiceList() {
     }
     setData(response.payload.data);
   };
-  const fetchCountData = async () => {
-    const response = await ApiGet(uriTrans + "/invoice/count", auth.token);
+  const fetchCountData = async (strSearch) => {
+    const response = await ApiGet(
+      uriTrans + `/invoice/count${strSearch}`,
+      auth.token
+    );
     setTotalItems(response.payload.data);
   };
   useEffect(() => {
-    fetchListData(currentPage);
-    fetchCountData();
+    fetchListData(currentPage, "");
+    fetchCountData("");
   }, []);
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected + 1);
     fetchListData(event.selected + 1);
+  };
+
+  const handleSearch = (event) => {
+    let valueSearch = event.target.value;
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    let strSearch = "";
+    if (valueSearch !== "") {
+      strSearch = `filter=invoice_number like ${valueSearch}`;
+    }
+
+    fetchListData(1, "&" + strSearch);
+    fetchCountData("?" + strSearch);
   };
 
   return (
@@ -75,6 +93,7 @@ export default function SalesInvoiceList() {
             id="table-search"
             class="outline-none block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-600 focus:border-gray-600"
             placeholder="Search by invoice number"
+            onKeyUp={handleSearch}
           />
         </div>
       </div>
