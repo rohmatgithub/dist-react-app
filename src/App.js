@@ -49,6 +49,8 @@ import SalesOrderDetail from "./module-transaction/salesOrderDetail";
 import SalesInvoiceList from "./module-transaction/salesInvoiceList";
 import SalesInvoiceDetail from "./module-transaction/salesInvoiceDetail";
 import SalesOrderEdit from "./module-transaction/salesOrderEdit";
+import CustomerPurchase from "./module-report/customerPurchase";
+import DisplayCustomerPurchase from "./module-report/displayCustomerPurchase";
 const App = () => {
   const [isAuthenticated, setisAuthenticated] = useState("");
   const [isSelected, setIsSelected] = useState("");
@@ -403,6 +405,14 @@ const App = () => {
                 <Route
                   path="/transaction/salesinvoice"
                   element={<SalesInvoiceList />}
+                />
+                <Route
+                  path="/report/customerpurchase"
+                  element={<CustomerPurchase />}
+                />
+                <Route
+                  path="/display/customerpurchase"
+                  element={<DisplayCustomerPurchase />}
                 />
               </Routes>
             </div>

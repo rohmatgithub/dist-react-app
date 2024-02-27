@@ -161,20 +161,12 @@ export default function Sidebar(props) {
             </div>
             {active === "report" && (
               <ul className="pl-4">
-                <li>
+                <li onClick={() => onClickMenu("Customer Purchase")}>
                   <Link
                     className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
-                    to="/report/salesorder"
+                    to="/report/customerpurchase"
                   >
-                    Sales Order
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="cursor-pointer flex items-stretch gap-4 ml-3 mt-7 self-start max-md:ml-2.5 max-md:mt-10"
-                    to="/report/salesinvoice"
-                  >
-                    Sales Invoice
+                    Customer Purchase
                   </Link>
                 </li>
               </ul>

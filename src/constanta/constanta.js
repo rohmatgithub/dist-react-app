@@ -5,3 +5,4 @@ const uri = "http://localhost:9091";
 export const uriAuth = uri + "/v1/oauth";
 export const uriMaster = uri + "/v1/master";
 export const uriTrans = uri + "/v1/trans";
+export const urireport = uri + "/v1/report";
